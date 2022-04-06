@@ -1,7 +1,6 @@
 
 /* CSS */
 
-
 .btn-size {
   align-items: center;
   background-clip: padding-box;
@@ -120,8 +119,7 @@ input:checked + .slider:before {
 
 /* Product CSS */
 .product-card {
-  border: 1px solid #ccc;
-  border-radius: 20px;
+  border-radius: 5px;
 }
 
 .product-card .product-header {
