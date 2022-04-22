@@ -50,13 +50,13 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item {{ (request()->is('Denaku/product/add')) ? 'menu-open' : '' }}">
+              <li class="nav-item {{ (request()->is('Denaku/product')) ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>New Product</p>
                 </a>
               </li>
-              <li class="nav-item {{ (request()->is('Denaku/product/category/add')) ? 'menu-open' : '' }}">
+              <li class="nav-item {{ (request()->is('Denaku/product/category')) ? 'active' : '' }}">
                 <a href="{{ route('product-category.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Product Category</p>

@@ -145,3 +145,11 @@ input:checked + .slider:before {
 .product-card .product-stocks {
   padding: 5px;
 }
+
+.active {
+  background-color: rgba(255,255,255,.1);
+}
+
+.menu-open {
+  background-color: #343a40;
+}

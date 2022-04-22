@@ -17,6 +17,10 @@ class ProductController extends Controller
         $this->middleware('auth');
     }
 
+    public function sampleCropper() {
+        return view('modal.product.add');
+    }
+
     public function getProductIndex(){
         $user = User::find( Auth::id() );
         $products = Product::all();
@@ -25,6 +29,15 @@ class ProductController extends Controller
         ->get();
 
         return view('pages.product.index', compact('user', 'product_category', 'products'));
+    }
+
+    public function addProductView() {
+        $user = User::find( Auth::id() );
+        $products = Product::all();
+        $product_category = ProductCategory::where('status', 1)
+        ->where('active', 1)
+        ->get();
+        return view('partials.addProduct', compact('user', 'product_category', 'products'));
     }
 
     public function addProduct(Request $request){

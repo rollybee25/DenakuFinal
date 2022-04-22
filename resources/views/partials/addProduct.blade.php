@@ -44,49 +44,51 @@
 
 @section('content')
 
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <button type="button" class="btn-size save-btn" data-toggle="modal"  data-target="#add_product_modal" role="button">Add New Product</button>
-      </div><!-- /.row -->
 
-      <div class="grid-container">
-            @foreach ($products as $product)
-            <div class="product-card">
-                <div class="product-header">
-                    <h1>{{ $product->name }}</h1>
+<div class="content-wrapper" style="background-color: white;">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="col-md-12" id="add_product">
+                <div class="form-group row">
+                    <label for="product_code" class="col-md-2 col-form-label">Code</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="product_code" placeholder="Product Code...">
+                    </div>
+                    <label for="product_name" class="col-md-2 col-form-label">Name</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="product_name" placeholder="Product Name...">
+                    </div>
                 </div>
-                <div class="product-stocks">
-                  <h2>{{ $product->stocks }}</h2>
-                  <p>Available Stocks</p>
+                <div class="form-group row">
+                    <label for="product_category" class="col-md-2 col-form-label">Category</label>
+                    <div class="col-md-4">
+                        <select id="product_category" class="form-control">
+                            <option selected="">Choose Category...</option>
+                            @foreach ($product_category as $categories)
+                                <option value="{{ $categories->id }}">{{ $categories->category }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <label for="product_stocks" class="col-md-2">Stock/s</label>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="product_stocks" placeholder="Product Stocks...">
+                    </div>
                 </div>
-                <div class="product-details">
-                  <p>{{ $product->details }}</p>
+                <div class="form-group row">
+                    <label for="product_details" class="col-md-2">Details</label>
+                    <div class="col-md-10">
+                        <textarea class="form-control " id="product_details" rows="3"></textarea>
+                    </div>
                 </div>
+                <div class="float-right">
+                    <button type="button" class="btn-size delete-btn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-size update-btn" id="product_save">Save Product</button>
+                </div>
+                
             </div>
-          @endforeach
-      </div>
-      
-      
-
-      
-    </div><!-- /.container-fluid -->
-  </div>
-  <!-- /.content-header -->
-
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+        </div>
+    </div>
 </div>
-
-
-
 
 @endsection
 
@@ -114,7 +116,7 @@
           $(document).on('click', '#product_save', function(e){
               e.preventDefault();
 
-              var product = $(this).closest('#add_product_modal');
+              var product = $(this).closest('#add_product');
               var product_code = product.find('#product_code').val();
               var product_name = product.find('#product_name').val();
               var product_category = product.find('#product_category').val();
