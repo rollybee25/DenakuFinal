@@ -32,6 +32,7 @@
 .btn-size:hover,
 .btn-size:focus {
   box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+  color: white;
 }
 
 .btn-size:hover {
@@ -152,4 +153,8 @@ input:checked + .slider:before {
 
 .menu-open {
   background-color: #343a40;
+}
+
+.fa-trash {
+  color: #f10f0f;
 }

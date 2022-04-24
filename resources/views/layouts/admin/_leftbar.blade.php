@@ -41,6 +41,16 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="{{route('sample-mark-anthony')}}" class="nav-link">
+              <i class="nav-icon fas fa-solid fa-briefcase"></i>
+              <p>
+                Mark Anthony
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+          </li>
+
           <li class="nav-item {{ (request()->is('Denaku/product*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-solid fa-cash-register"></i>
@@ -50,10 +60,10 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item {{ (request()->is('Denaku/product')) ? 'active' : '' }}">
+              <li class="nav-item {{ (request()->is('Denaku/products')) ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>New Product</p>
+                  <p>Product List</p>
                 </a>
               </li>
               <li class="nav-item {{ (request()->is('Denaku/product/category')) ? 'active' : '' }}">
@@ -66,22 +76,13 @@
           </li>
           
           
-          <li class="nav-item">
-            <a href="#" class="nav-link">
+          <li class="nav-item {{ (request()->is('/Denaku/store')) ? 'active' : '' }}" >
+            <a href="{{route('store.index')}}" class="nav-link" >
               <i class="nav-icon fas fa-solid fa-store"></i>
               <p>
                 Store Management
-                <i class="right fas fa-angle-left"></i>
               </p>
             </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="pages/charts/chartjs.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-            </ul>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">

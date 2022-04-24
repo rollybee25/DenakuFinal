@@ -14,6 +14,11 @@ class SampleController extends Controller
         return view('pages.sample.cropperJs');
     }
 
+    
+    public function getMarkAnthony() {
+        return view('pages.sample.mark-anthony');
+    }
+
     public function getCropperUpload(Request $request)
     {
         $folderPath = public_path('upload/');

@@ -87,7 +87,7 @@
             active = 0;
           }
 
-          var url = '{{ route('product-category.active') }}';
+          var url = "{{ route('product-category.active') }}";
 
           $.ajax({
             url:url,
@@ -126,8 +126,7 @@
             var category_name = tr.find("td:nth-child(2)").text();
             $('#delete_category_product_modal').find('.id-to-update').val(id);
             $('#delete_category_product_modal').find('#category_name').val(category_name);
-            $('#delete_category_product_modal').find('#category_name').attr('disabled', 'true');
-            console.log($('#edit_category_product_modal').find('#category_name').val());
+            $('#delete_category_product_modal').find('#category_name').attr('disabled', 'true');s
         })
         
 

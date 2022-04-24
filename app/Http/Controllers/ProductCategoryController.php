@@ -158,7 +158,6 @@ class ProductCategoryController extends Controller
                     data-target="#delete_category_product_modal">'.$label.'</button>
                 ';
             }
-
         }
 
         $totalFilteredRecord = $totalDataRecord = $draw_val = "";
@@ -208,9 +207,6 @@ class ProductCategoryController extends Controller
             // $dataedit =  route('posts_table.edit',$post_val->id);
             
             // $checkmark = check($post_val->checkmark);
-
-
-            $button = 
 
 
             $postnestedData['id'] = $key + 1;
