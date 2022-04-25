@@ -47,6 +47,7 @@ Route::get('/Denaku/store', [StoreManagementController::class, 'getStoreIndex'])
 Route::post('/Denaku/store/add', [StoreManagementController::class, 'addStore'])->name('store.add');
 Route::post('/Denaku/store/edit', [StoreManagementController::class, 'editStore'])->name('store.edit');
 Route::post('/Denaku/store/delete', [StoreManagementController::class, 'deleteStore'])->name('store.delete');
+Route::post('/Denaku/store/active', [StoreManagementController::class, 'storeUpdateActive'])->name('store.active');
 Route::post('/Denaku/store/table', [StoreManagementController::class, 'storeGetTableData'])->name('store.table');
 
 Route::get('/Denaku/sample/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');

@@ -23,7 +23,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           
-          <li class="nav-item">
+          <li class="nav-item {{ (request()->is('Denaku/dashboard')) ? 'menu-open' : '' }}">
             <a href="{{route('home') }}" class="nav-link">
               <i class="nav-icon fas fa-solid fa-dashboard"></i>
               <p>

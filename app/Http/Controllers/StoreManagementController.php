@@ -29,6 +29,8 @@ class StoreManagementController extends Controller
             ->first();
             if( $store ) {
                 $store->store_name = $request->store_name;
+                $store->store_phone = $request->store_phone;
+                $store->store_address = $request->store_address;
                 $store->store_active = '1';
                 $store->store_status = '1';
                 $store->update();
@@ -36,6 +38,8 @@ class StoreManagementController extends Controller
                 $store = new Store();
                 $store->store_code = $request->store_code;
                 $store->store_name = $request->store_name;
+                $store->store_phone = $request->store_phone;
+                $store->store_address = $request->store_address;
                 $store->save();
             }
 
@@ -67,6 +71,8 @@ class StoreManagementController extends Controller
             $store = Store::where('id',$request->id)->first();
             $store->store_code = $request->store_code;
             $store->store_name = $request->store_name;
+            $store->store_phone = $request->store_phone;
+            $store->store_address = $request->store_address;
             $store->update();
             
 
@@ -117,7 +123,11 @@ class StoreManagementController extends Controller
         }
     }
 
-
+    public function storeUpdateActive(Request $request) {
+        $store = Store::find($request->id);
+        $store->store_active = $request->active;
+        $store->update();
+    }
 
     public function getStoreIndex() {
         $user = User::find( Auth::id() );
@@ -171,7 +181,10 @@ class StoreManagementController extends Controller
         $totalFilteredRecord = $totalDataRecord = $draw_val = "";
         $columns_list = array(
             0 => 'id',
-            1 => 'store_code',
+            2 => 'store_code',
+            3 => 'store_name',
+            4 => 'store_address',
+            5 => 'store_phone',
         );
         
         $totalDataRecord = Store::where('store_status', '1')->count();
@@ -214,6 +227,8 @@ class StoreManagementController extends Controller
                 $postnestedData['id'] = $key + 1;
                 $postnestedData['code'] = $post_val->store_code;
                 $postnestedData['name'] = $post_val->store_name;
+                $postnestedData['phone'] = $post_val->store_phone;
+                $postnestedData['address'] = $post_val->store_address;
                 $postnestedData['active'] = active($post_val->store_active, $post_val->id);
                 $postnestedData['action'] = button('edit', $post_val->id, 'Edit');
                 $postnestedData['action'] .= button('delete', $post_val->id, 'Delete');

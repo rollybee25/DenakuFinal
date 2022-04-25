@@ -35,8 +35,10 @@
             <thead>
             <tr>
                 <th class="col-md-1">#</th>
-                <th class="col-md-2">Code</th>
-                <th class="col-md-4">Name</th>
+                <th class="col-md-1">Code</th>
+                <th class="col-md-2">Name</th>
+                <th class="col-md-1">Phone</th>
+                <th class="col-md-2">Address</th>
                 <th class="col-md-1">Active</th>
                 <th class="col-md-3">Action</th>
             </tr>
@@ -83,12 +85,12 @@ $(document).ready(function(){
 
 
         if(value === true) {
-        active = 1;
+            active = 1;
         } else {
-        active = 0;
+            active = 0;
         }
 
-        var url = "{{ route('product-category.active') }}";
+        var url = "{{ route('store.active') }}";
 
         $.ajax({
         url:url,
@@ -115,9 +117,13 @@ $(document).ready(function(){
         var id = $(this).attr('id');
         var store_code = tr.find("td:nth-child(2)").text();
         var store_name = tr.find("td:nth-child(3)").text();
+        var store_phone = tr.find("td:nth-child(4)").text();
+        var store_address = tr.find("td:nth-child(5)").text();
         $('#edit_store_modal').find('.id-to-update').val(id);
         $('#edit_store_modal').find('#store_code').val(store_code);
         $('#edit_store_modal').find('#store_name').val(store_name);
+        $('#edit_store_modal').find('#store_phone').val(store_phone);
+        $('#edit_store_modal').find('#store_address').val(store_address);
     })
 
     $(document).on('click','.store-delete', function(){
@@ -138,6 +144,8 @@ $(document).ready(function(){
 
         var store_code = $(this).closest('#add_store_modal').find("#store_code").val();
         var store_name = $(this).closest('#add_store_modal').find("#store_name").val();
+        var store_phone = $(this).closest('#add_store_modal').find("#store_phone").val();
+        var store_address = $(this).closest('#add_store_modal').find("#store_address").val();
         var url = "{{ route('store.add') }}";
 
         $.ajax({
@@ -145,7 +153,9 @@ $(document).ready(function(){
         method:'POST',
         data:{
                     store_code:store_code,
-                    store_name: store_name
+                    store_name: store_name,
+                    store_phone: store_phone,
+                    store_address: store_address
                 },
         success:function(response){
             if(response.success === true) {
@@ -172,6 +182,7 @@ $(document).ready(function(){
         });
 
         $('#add_store_modal').modal('hide');
+        $(this).removeAttr('disabled');
 
     });
 
@@ -180,10 +191,8 @@ $(document).ready(function(){
         var id = $(this).closest('#edit_store_modal').find(".id-to-update").val();
         var store_code = $(this).closest('#edit_store_modal').find("#store_code").val();
         var store_name = $(this).closest('#edit_store_modal').find("#store_name").val();
-
-        var value = [id, store_code, store_name];
-
-        console.log(value)
+        var store_phone = $(this).closest('#edit_store_modal').find("#store_phone").val();
+        var store_address = $(this).closest('#edit_store_modal').find("#store_address").val();
 
 
         var url = "{{ route('store.edit') }}";
@@ -194,7 +203,9 @@ $(document).ready(function(){
         data:{
                 id: id,
                 store_code: store_code,
-                store_name: store_name
+                store_name: store_name,
+                store_phone: store_phone,
+                store_address: store_address
                 },
         success:function(response){
             if(response.success === true) {
@@ -292,6 +303,12 @@ $(document).ready(function(){
                 },
                 { 
                     "data": "name",
+                },
+                { 
+                    "data": "phone",
+                },
+                { 
+                    "data": "address",
                 },
                 { 
                     "data": "active",

@@ -19,6 +19,8 @@ class CreateStoreTable extends Migration
             $table->string('store_name');
             $table->integer('store_active')->default('1');
             $table->integer('store_status')->default('1');
+            $table->string('store_phone');
+            $table->string('store_address');
             $table->timestamps();
         });
     }

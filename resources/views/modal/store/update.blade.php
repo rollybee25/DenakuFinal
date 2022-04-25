@@ -22,6 +22,18 @@
                   <input type="text" class="form-control" id="store_name" placeholder="Store Name...">
               </div>
           </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-md-3 col-form-label">Phone</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="store_phone" placeholder="Phone..." autocomplete="off">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword" class="col-md-3 col-form-label">Address</label>
+            <div class="col-md-9">
+                <textarea class="form-control " autocomplete="off" id="store_address" placeholder="Store Address..." rows="3"></textarea>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-size delete-btn" data-dismiss="modal">Close</button>
