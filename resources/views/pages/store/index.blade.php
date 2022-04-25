@@ -1,6 +1,6 @@
 @extends('layouts.admin.app')
 
-@section('title', 'Product Categories')
+@section('title', 'Store')
 
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -26,7 +26,7 @@
 <div class="content-header">
     <div class="container-fluid">
     <div class="row mb-2">
-        <button type="button" class="btn-size save-btn" data-toggle="modal"  data-target="#add_category_product_modal" role="button">Add New Category</button>
+        <button type="button" class="btn-size save-btn" data-toggle="modal"  data-target="#add_store_modal" role="button">Add New Store</button>
     </div><!-- /.row -->
     <div class="panel panel-default">
         <div class="panel-body">
@@ -59,9 +59,9 @@
 <!-- /.content -->
 </div>
 
-@include('modal.product.category_add')
-@include('modal.product.category_update')
-@include('modal.product.category_delete')
+@include('modal.store.add')
+@include('modal.store.update')
+@include('modal.store.delete')
 
 @endsection
 
@@ -108,46 +108,50 @@ $(document).ready(function(){
     })
 
 
-    $(document).on('click','.category-update', function(){
+    $(document).on('click','.store-update', function(){
         var btn = $(this);
         var tr = btn.closest('tr');
 
         var id = $(this).attr('id');
-        var category_name = tr.find("td:nth-child(2)").text();
-        $('#edit_category_product_modal').find('.id-to-update').val(id);
-        $('#edit_category_product_modal').find('#category_name').val(category_name);
-        console.log($('#edit_category_product_modal').find('#category_name').val());
+        var store_code = tr.find("td:nth-child(2)").text();
+        var store_name = tr.find("td:nth-child(3)").text();
+        $('#edit_store_modal').find('.id-to-update').val(id);
+        $('#edit_store_modal').find('#store_code').val(store_code);
+        $('#edit_store_modal').find('#store_name').val(store_name);
     })
 
-    $(document).on('click','.category-delete', function(){
+    $(document).on('click','.store-delete', function(){
         var btn = $(this);
         var tr = btn.closest('tr');
 
         var id = $(this).attr('id');
-        var category_name = tr.find("td:nth-child(2)").text();
-        $('#delete_category_product_modal').find('.id-to-update').val(id);
-        $('#delete_category_product_modal').find('#category_name').val(category_name);
-        $('#delete_category_product_modal').find('#category_name').attr('disabled', 'true');s
+        var store_code = tr.find("td:nth-child(2)").text();
+        var store_name = tr.find("td:nth-child(3)").text();
+        $('#delete_store_modal').find('.id-to-update').val(id);
+        $('#delete_store_modal').find('#store_code').val(store_code);
+        $('#delete_store_modal').find('#store_name').val(store_name);
     })
     
 
-    $('#product_category_save').on('click', function(e) {
+    $('#store_save').on('click', function(e) {
         e.preventDefault();
 
-        var category_name = $(this).closest('#add_category_product_modal').find("#category_name").val();
-        var url = '{{ route('product-category.add') }}';
+        var store_code = $(this).closest('#add_store_modal').find("#store_code").val();
+        var store_name = $(this).closest('#add_store_modal').find("#store_name").val();
+        var url = "{{ route('store.add') }}";
 
         $.ajax({
         url:url,
         method:'POST',
         data:{
-                category_name:category_name
+                    store_code:store_code,
+                    store_name: store_name
                 },
         success:function(response){
             if(response.success === true) {
             $(this).removeAttr("disabled")
             Swal.fire({
-                title: 'Category Inserted',
+                title: 'Store Inserted',
                 text: 'Success',
                 icon: 'success',
                 confirmButtonText: 'Okay'
@@ -156,7 +160,7 @@ $(document).ready(function(){
             } else {
             Swal.fire({
                 title: 'Error',
-                text: 'Duplicate Entry for category: '+ category_name,
+                text: response.message,
                 icon: 'error',
                 confirmButtonText: 'Okay'
             })
@@ -167,29 +171,36 @@ $(document).ready(function(){
         }
         });
 
-        $('#add_category_product_modal').modal('hide');
+        $('#add_store_modal').modal('hide');
 
     });
 
-    $('#product_category_edit').on('click', function(e) {
+    $('#store_edit').on('click', function(e) {
         e.preventDefault();
+        var id = $(this).closest('#edit_store_modal').find(".id-to-update").val();
+        var store_code = $(this).closest('#edit_store_modal').find("#store_code").val();
+        var store_name = $(this).closest('#edit_store_modal').find("#store_name").val();
 
-        var category_name = $(this).closest('#edit_category_product_modal').find("#category_name").val();
-        var id = $(this).closest('#edit_category_product_modal').find(".id-to-update").val();
-        var url = '{{ route('product-category.edit') }}';
+        var value = [id, store_code, store_name];
+
+        console.log(value)
+
+
+        var url = "{{ route('store.edit') }}";
 
         $.ajax({
         url:url,
         method:'POST',
         data:{
-                category_name:category_name,
-                id: id
+                id: id,
+                store_code: store_code,
+                store_name: store_name
                 },
         success:function(response){
             if(response.success === true) {
             $(this).removeAttr("disabled")
             Swal.fire({
-                title: 'Category Updated',
+                title: 'Store Updated',
                 text: 'Success',
                 icon: 'success',
                 confirmButtonText: 'Okay'
@@ -198,7 +209,7 @@ $(document).ready(function(){
             } else {
             Swal.fire({
                 title: 'Error',
-                text: 'Duplicate Entry for category: '+ category_name,
+                text: response.message,
                 icon: 'error',
                 confirmButtonText: 'Okay'
             })
@@ -209,16 +220,18 @@ $(document).ready(function(){
         }
         });
 
-        $('#edit_category_product_modal').modal('hide');
+        $('#edit_store_modal').modal('hide');
         $(this).removeAttr('disabled');
 
     });
 
-    $('#product_category_delete').on('click', function(e) {
+    $('#store_delete').on('click', function(e) {
         e.preventDefault();
 
-        var id = $(this).closest('#delete_category_product_modal').find(".id-to-update").val();
-        var url = '{{ route('product-category.delete') }}';
+        var id = $(this).closest('#delete_store_modal').find(".id-to-update").val();
+        var store_code = $(this).closest('#edit_store_modal').find("#store_code").val();
+        var store_name = $(this).closest('#edit_store_modal').find("#store_name").val();
+        var url = "{{ route('store.delete') }}";
 
         $.ajax({
         url:url,
@@ -230,7 +243,7 @@ $(document).ready(function(){
             if(response.success === true) {
             $(this).removeAttr("disabled")
             Swal.fire({
-                title: 'Category Deleted',
+                title: 'Store Deleted',
                 text: 'Success',
                 icon: 'success',
                 confirmButtonText: 'Okay'
@@ -239,7 +252,7 @@ $(document).ready(function(){
             } else {
             Swal.fire({
                 title: 'Error',
-                text: 'Duplicate Entry for category: '+ category_name,
+                text: respose.message,
                 icon: 'error',
                 confirmButtonText: 'Okay'
             })
@@ -250,7 +263,7 @@ $(document).ready(function(){
         }
         });
 
-        $('#delete_category_product_modal').modal('hide');
+        $('#delete_store_modal').modal('hide');
         $(this).removeAttr('disabled');
 
     });

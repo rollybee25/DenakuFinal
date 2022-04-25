@@ -15,7 +15,7 @@ class CreateStoreTable extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
-            $table->string('store_code');
+            $table->string('store_code')->unique();
             $table->string('store_name');
             $table->integer('store_active')->default('1');
             $table->integer('store_status')->default('1');

@@ -18,6 +18,107 @@ class StoreManagementController extends Controller
         $this->middleware('auth');
     }
 
+    public function addStore(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            
+            $store = Store::where('store_code',$request->store_code)
+            ->where('store_status','=','2')
+            ->first();
+            if( $store ) {
+                $store->store_name = $request->store_name;
+                $store->store_active = '1';
+                $store->store_status = '1';
+                $store->update();
+            } else {
+                $store = new Store();
+                $store->store_code = $request->store_code;
+                $store->store_name = $request->store_name;
+                $store->save();
+            }
+
+            DB::commit();
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Success'
+                ]
+            );
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
+    public function editStore(Request $request)
+    {
+        DB::beginTransaction();
+
+        try {
+            
+            $store = Store::where('id',$request->id)->first();
+            $store->store_code = $request->store_code;
+            $store->store_name = $request->store_name;
+            $store->update();
+            
+
+            DB::commit();
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Success'
+                ]
+            );
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
+    public function deleteStore(Request $request) {
+        DB::beginTransaction();
+
+        try {
+
+            $store = Store::find($request->id);
+            $store->store_status = 2;
+            $store->update();
+
+            DB::commit();
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Success'
+                ]
+            );
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
+
+
     public function getStoreIndex() {
         $user = User::find( Auth::id() );
         $products = DB::table('products')
@@ -52,17 +153,17 @@ class StoreManagementController extends Controller
             if( $type == 'edit' ) {
                 return '
                     <button type="button" id="'.$id.'" 
-                    class="btn btn-success btn-sm category-update" 
+                    class="btn btn-success btn-sm store-update" 
                     data-toggle="modal" 
-                    data-target="#edit_category_product_modal">'.$label.'</button>
+                    data-target="#edit_store_modal">'.$label.'</button>
                 ';
             }
             if( $type == 'delete' ) {
                 return '
                     <button type="button" id="'.$id.'" 
-                    class="btn btn-danger btn-sm category-delete" 
+                    class="btn btn-danger btn-sm store-delete" 
                     data-toggle="modal" 
-                    data-target="#delete_category_product_modal">'.$label.'</button>
+                    data-target="#delete_store_modal">'.$label.'</button>
                 ';
             }
         }
@@ -110,16 +211,13 @@ class StoreManagementController extends Controller
         {
             foreach ($post_data as $key => $post_val)
             {
-
-
-            $postnestedData['id'] = $key + 1;
-            $postnestedData['code'] = $post_val->store_code;
-            $postnestedData['name'] = $post_val->store_name;
-            $postnestedData['active'] = active($post_val->active, $post_val->id);
-            $postnestedData['action'] = button('edit', $post_val->id, 'Edit');
-            $postnestedData['action'] .= button('delete', $post_val->id, 'Delete');
-            $data_val[] = $postnestedData;
-            
+                $postnestedData['id'] = $key + 1;
+                $postnestedData['code'] = $post_val->store_code;
+                $postnestedData['name'] = $post_val->store_name;
+                $postnestedData['active'] = active($post_val->store_active, $post_val->id);
+                $postnestedData['action'] = button('edit', $post_val->id, 'Edit');
+                $postnestedData['action'] .= button('delete', $post_val->id, 'Delete');
+                $data_val[] = $postnestedData;
             }
         }
         $draw_val = $request->input('draw');

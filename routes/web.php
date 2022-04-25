@@ -22,7 +22,7 @@ use App\Http\Controllers\StoreManagementController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-Route::get('/Denaku', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/Denaku/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/Denaku/sample-cropper', [App\Http\Controllers\ProductController::class, 'sampleCropper'])->name('sample-cropper');
 
 Route::get('/Denaku/products', [ProductController::class, 'getProductIndex'])->name('product.index');
@@ -44,6 +44,9 @@ Route::post('/Denaku/product/category/table', [ProductCategoryController::class,
 
 
 Route::get('/Denaku/store', [StoreManagementController::class, 'getStoreIndex'])->name('store.index');
+Route::post('/Denaku/store/add', [StoreManagementController::class, 'addStore'])->name('store.add');
+Route::post('/Denaku/store/edit', [StoreManagementController::class, 'editStore'])->name('store.edit');
+Route::post('/Denaku/store/delete', [StoreManagementController::class, 'deleteStore'])->name('store.delete');
 Route::post('/Denaku/store/table', [StoreManagementController::class, 'storeGetTableData'])->name('store.table');
 
 Route::get('/Denaku/sample/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');
