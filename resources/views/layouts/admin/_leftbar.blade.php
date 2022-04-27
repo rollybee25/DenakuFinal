@@ -23,7 +23,7 @@
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           
-          <li class="nav-item {{ (request()->is('Denaku/dashboard')) ? 'menu-open' : '' }}">
+          <li class="nav-item {{ (request()->is('dashboard')) ? 'menu-open' : '' }}">
             <a href="{{route('home') }}" class="nav-link">
               <i class="nav-icon fas fa-solid fa-dashboard"></i>
               <p>
@@ -50,7 +50,7 @@
             </ul>
           </li>
 
-          <li class="nav-item {{ (request()->is('Denaku/product*')) ? 'menu-open' : '' }}">
+          <li class="nav-item {{ (request()->is('product*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-solid fa-cash-register"></i>
               <p>
@@ -59,13 +59,13 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item {{ (request()->is('Denaku/products')) ? 'active' : '' }}">
+              <li class="nav-item {{ (request()->is('product')) ? 'active' : '' }}">
                 <a href="{{ route('product.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Product List</p>
                 </a>
               </li>
-              <li class="nav-item {{ (request()->is('Denaku/product/category')) ? 'active' : '' }}">
+              <li class="nav-item {{ (request()->is('product/category')) ? 'active' : '' }}">
                 <a href="{{ route('product-category.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Product Category</p>
@@ -74,8 +74,16 @@
             </ul>
           </li>
           
+          <li class="nav-item {{ (request()->is('client')) ? 'menu-open' : '' }}" >
+            <a href="{{route('client.index')}}" class="nav-link" >
+              <i class="nav-icon fas fa-solid fa-user"></i>
+              <p>
+                Client Management
+              </p>
+            </a>
+          </li>
           
-          <li class="nav-item {{ (request()->is('Denaku/store')) ? 'menu-open' : '' }}" >
+          <li class="nav-item {{ (request()->is('/store')) ? 'menu-open' : '' }}" >
             <a href="{{route('store.index')}}" class="nav-link" >
               <i class="nav-icon fas fa-solid fa-store"></i>
               <p>

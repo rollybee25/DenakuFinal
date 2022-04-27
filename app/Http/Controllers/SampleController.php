@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class SampleController extends Controller
 {
+    public function getElibs() {
+        return view('pages.sample.elibs');
+    }
+
     public function getCropperView() {
         return view('pages.sample.cropper');
     }

@@ -7,6 +7,9 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\SampleController;
 use App\Http\Controllers\JsonController;
 use App\Http\Controllers\StoreManagementController;
+use App\Http\Controllers\ClientController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -22,45 +25,51 @@ use App\Http\Controllers\StoreManagementController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
-Route::get('/Denaku/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/Denaku/sample-cropper', [App\Http\Controllers\ProductController::class, 'sampleCropper'])->name('sample-cropper');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/sample-cropper', [App\Http\Controllers\ProductController::class, 'sampleCropper'])->name('sample-cropper');
 
-Route::get('/Denaku/products', [ProductController::class, 'getProductIndex'])->name('product.index');
-Route::get('/Denaku/product/add-view', [ProductController::class, 'addProductView'])->name('product.add-view');
-Route::get('/Denaku/product/edit-view/{id}', [ProductController::class, 'editProductView'])->name('product.edit-view');
-Route::post('/Denaku/product/add', [ProductController::class, 'addProduct'])->name('product.add');
-Route::post('/Denaku/product/edit', [ProductController::class, 'editProduct'])->name('product.edit');
-Route::post('/Denaku/product/delete', [ProductController::class, 'deleteProduct'])->name('product.delete');
-Route::post('/Denaku/product/active', [ProductController::class, 'productUpdateActive'])->name('product.active');
+Route::get('/product', [ProductController::class, 'getProductIndex'])->name('product.index');
+Route::get('/product/add-view', [ProductController::class, 'addProductView'])->name('product.add-view');
+Route::get('/product/edit-view/{id}', [ProductController::class, 'editProductView'])->name('product.edit-view');
+Route::post('/product/add', [ProductController::class, 'addProduct'])->name('product.add');
+Route::post('/product/edit', [ProductController::class, 'editProduct'])->name('product.edit');
+Route::post('/product/delete', [ProductController::class, 'deleteProduct'])->name('product.delete');
+Route::post('/product/active', [ProductController::class, 'productUpdateActive'])->name('product.active');
 Route::post('/product-get-table-data', [ProductController::class, 'productGetTableData'])->name('product-get-table-data');
 
+Route::get('/product/category', [ProductCategoryController::class, 'getCategoryIndex'])->name('product-category.index');
+Route::post('/product/category/add', [ProductCategoryController::class, 'addCategory'])->name('product-category.add');
+Route::post('/product/category/edit', [ProductCategoryController::class, 'editCategory'])->name('product-category.edit');
+Route::post('/product/category/delete', [ProductCategoryController::class, 'deleteCategory'])->name('product-category.delete');
+Route::post('/product/category/active', [ProductCategoryController::class, 'updateActive'])->name('product-category.active');
+Route::post('/product/category/table', [ProductCategoryController::class, 'getProductCategoryTable'])->name('product-category.table');
 
-Route::get('/Denaku/product/category', [ProductCategoryController::class, 'getCategoryIndex'])->name('product-category.index');
-Route::post('/Denaku/product/category/add', [ProductCategoryController::class, 'addCategory'])->name('product-category.add');
-Route::post('/Denaku/product/category/edit', [ProductCategoryController::class, 'editCategory'])->name('product-category.edit');
-Route::post('/Denaku/product/category/delete', [ProductCategoryController::class, 'deleteCategory'])->name('product-category.delete');
-Route::post('/Denaku/product/category/active', [ProductCategoryController::class, 'updateActive'])->name('product-category.active');
-Route::post('/Denaku/product/category/table', [ProductCategoryController::class, 'getProductCategoryTable'])->name('product-category.table');
+Route::get('/client', [ClientController::class, 'getClientIndex'])->name('client.index');
+Route::post('/client/add', [ClientController::class, 'addClient'])->name('client.add');
+Route::post('/client/edit', [ClientController::class, 'editClient'])->name('client.edit');
+Route::post('/client/delete', [ClientController::class, 'deleteClient'])->name('client.delete');
+Route::post('/client/active', [ClientController::class, 'clientUpdateActive'])->name('client.active');
+Route::post('/client/table', [ClientController::class, 'getClientTable'])->name('client.table');
+
+Route::get('/store', [StoreManagementController::class, 'getStoreIndex'])->name('store.index');
+Route::post('/store/add', [StoreManagementController::class, 'addStore'])->name('store.add');
+Route::post('/store/edit', [StoreManagementController::class, 'editStore'])->name('store.edit');
+Route::post('/store/delete', [StoreManagementController::class, 'deleteStore'])->name('store.delete');
+Route::post('/store/active', [StoreManagementController::class, 'storeUpdateActive'])->name('store.active');
+Route::post('/store/table', [StoreManagementController::class, 'storeGetTableData'])->name('store.table');
+
+Route::get('/sample/elibs', [SampleController::class, 'getElibs'])->name('sample.elibs');
+Route::get('/sample/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');
+Route::get('/sample/cropperJSView', [SampleController::class, 'getCropperViewReal'])->name('sample.cropperreal');
+Route::post('/sample/cropperJSView-upload', [SampleController::class, 'getCropperUpload'])->name('sample.cropperreal-upload');
 
 
-Route::get('/Denaku/store', [StoreManagementController::class, 'getStoreIndex'])->name('store.index');
-Route::post('/Denaku/store/add', [StoreManagementController::class, 'addStore'])->name('store.add');
-Route::post('/Denaku/store/edit', [StoreManagementController::class, 'editStore'])->name('store.edit');
-Route::post('/Denaku/store/delete', [StoreManagementController::class, 'deleteStore'])->name('store.delete');
-Route::post('/Denaku/store/active', [StoreManagementController::class, 'storeUpdateActive'])->name('store.active');
-Route::post('/Denaku/store/table', [StoreManagementController::class, 'storeGetTableData'])->name('store.table');
-
-Route::get('/Denaku/sample/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');
-Route::get('/Denaku/sample/cropperJSView', [SampleController::class, 'getCropperViewReal'])->name('sample.cropperreal');
-Route::post('/Denaku/sample/cropperJSView-upload', [SampleController::class, 'getCropperUpload'])->name('sample.cropperreal-upload');
-
-
-Route::get('/Denaku/sample/MarkAnthony', [SampleController::class, 'getMarkAnthony'])->name('sample-mark-anthony');
+Route::get('/sample/MarkAnthony', [SampleController::class, 'getMarkAnthony'])->name('sample-mark-anthony');
 
 
 
-Route::get('/Denaku/json-sample/add', [JsonController::class, 'getJsonData'])->name('get-json-data');
-Route::post('/Denaku/json-sample/create-json-file', [JsonController::class, 'postJsonName'])->name('create-json-file');
+Route::get('/json-sample/add', [JsonController::class, 'getJsonData'])->name('get-json-data');
+Route::post('/json-sample/create-json-file', [JsonController::class, 'postJsonName'])->name('create-json-file');
 
 Route::group(['middleware' => ['auth']], function() {
     Route::get('/logout', [LogoutController::class, 'perform'])->name('logout.perform');
