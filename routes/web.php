@@ -8,6 +8,7 @@ use App\Http\Controllers\SampleController;
 use App\Http\Controllers\JsonController;
 use App\Http\Controllers\StoreManagementController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\OrderManagementController;
 
 
 
@@ -27,6 +28,9 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/sample-cropper', [App\Http\Controllers\ProductController::class, 'sampleCropper'])->name('sample-cropper');
+
+Route::get('/order', [OrderManagementController::class, 'getOrderIndex'])->name('order.index');
+Route::get('/order/add', [OrderManagementController::class, 'addOrderView'])->name('order.add');
 
 Route::get('/product', [ProductController::class, 'getProductIndex'])->name('product.index');
 Route::get('/product/add-view', [ProductController::class, 'addProductView'])->name('product.add-view');
