@@ -1,47 +1,46 @@
-
 /* CSS */
 
 .btn-size {
-  align-items: center;
-  background-clip: padding-box;
-  border: 1px solid transparent;
-  border-radius: .25rem;
-  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
-  display: inline-flex;
-  font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  justify-content: center;
-  line-height: 1.25;
-  margin: 0;
-  min-height: 3rem;
-  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
-  position: relative;
-  text-decoration: none;
-  transition: all 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  width: auto;
+    align-items: center;
+    background-clip: padding-box;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 1.25;
+    margin: 0;
+    min-height: 3rem;
+    padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+    position: relative;
+    text-decoration: none;
+    transition: all 250ms;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: baseline;
+    width: auto;
 }
 
 .btn-size:hover,
 .btn-size:focus {
-  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-  color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+    color: white;
 }
 
 .btn-size:hover {
-  transform: translateY(-1px);
+    transform: translateY(-1px);
 }
 
 .btn-size:active {
-  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
-  transform: translateY(0);
+    box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+    transform: translateY(0);
 }
 
 .save-btn {
@@ -56,105 +55,114 @@
     background-color: #F1C40F;
 }
 
-
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 42px;
-  height: 22px;
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
 }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
 }
 
-input:checked + .slider {
-  background-color: #2196F3;
+input:checked+.slider {
+    background-color: #2196F3;
 }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(20px);
-  -ms-transform: translateX(20px);
-  transform: translateX(20px);
+input:checked+.slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
 }
+
 
 /* Rounded sliders */
+
 .slider.round {
-  border-radius: 34px;
+    border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 
 /* Product CSS */
+
 .product-card {
-  border-radius: 5px;
+    border-radius: 5px;
 }
 
 .product-card .product-header {
-  padding: 5px;
+    padding: 5px;
 }
 
 .product-card .product-header span {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: 1px solid black;
-  border-radius: 50%;
-  background-color: #fa0e0e;
-  color: white;
-  padding: 5px 10px;
-  cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid black;
+    border-radius: 50%;
+    background-color: #fa0e0e;
+    color: white;
+    padding: 5px 10px;
+    cursor: pointer;
 }
 
 .product-card .product-details {
-  padding: 5px;
+    padding: 5px;
 }
 
 .product-card .product-stocks {
-  padding: 5px;
+    padding: 5px;
 }
 
 .active {
-  background-color: rgba(255,255,255,.1);
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .menu-open {
-  background-color: #343a40;
+    background-color: #343a40;
 }
 
 .fa-trash {
-  color: #f10f0f;
+    color: #f10f0f;
+}
+
+.gradient {
+    background-color: red;
+    background-image: linear-gradient(red, orange);
+    background: red;
+    background: linear-gradient(red, orange);
 }
