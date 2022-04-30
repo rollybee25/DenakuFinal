@@ -160,9 +160,58 @@ input:checked+.slider:before {
     color: #f10f0f;
 }
 
-.gradient {
+.gradient-red {
     background-color: red;
-    background-image: linear-gradient(red, orange);
-    background: red;
-    background: linear-gradient(red, orange);
+    background-image: linear-gradient(to right, red, orange);
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.gradient-red-bottom {
+    background-color: red;
+    background-image: linear-gradient(to bottom, red, orange);
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.gradient-blue {
+    background-color: rgb(63, 94, 251);
+    background-image: linear-gradient(to right, rgb(63, 94, 251), rgba(252, 70, 107, 1) 100%);
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.text-small {
+    font-size: 14px;
+}
+
+.text-big {
+    font-size: 22px;
+}
+
+.position-bottom {
+    position: sticky;
+    bottom: 20px;
+}
+
+.display-grid {
+    display: grid;
+    column-gap: 10px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 10px;
+    width: 100%;
+}
+
+.display-grid div {
+    margin-bottom: 10px;
+    background-color: #4E944F;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+    cursor: pointer;
 }
