@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Product;
+use App\Models\Store;
 use DB;
 use Auth;
 
@@ -31,9 +32,12 @@ class HomeController extends Controller
         $user = User::find( Auth::id());
         $products = DB::table('products')
         ->join('product_categories', 'product_categories.id', 'products.category')
-        ->where('product_categories.status', '=', '1')
+        ->where('products.status', '=', '1')
+        ->where('products.active', '=', '1')
+        ->where('product_categories.active', '=', '1')
         ->get();
+        $stores = Store::where('store_status','=','1')->get();
         $clients = Client::where('client_status','=','1')->get();
-        return view('pages/home/home', compact('user', 'clients', 'products'));
+        return view('pages/home/home', compact('user', 'clients', 'products', 'stores'));
     }
 }

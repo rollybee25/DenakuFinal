@@ -20,7 +20,8 @@ class CreateClientsTable extends Migration
             $table->string('client_phone');
             $table->string('client_active')->default('1');
             $table->string('client_status')->default('1');
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
     }
 

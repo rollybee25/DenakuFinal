@@ -203,10 +203,6 @@ class ProductCategoryController extends Controller
         {
             foreach ($post_data as $key => $post_val)
             {
-            // $datashow =  route('posts_table.show',$post_val->id);
-            // $dataedit =  route('posts_table.edit',$post_val->id);
-            
-            // $checkmark = check($post_val->checkmark);
 
 
             $postnestedData['id'] = $key + 1;

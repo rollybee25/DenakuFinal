@@ -44,7 +44,7 @@
             <div class="inner">
               <h3>{{ $clients->count() }}</h3>
 
-              <p>Registered Client</p>
+              <p>Registered Clients</p>
             </div>
             <div class="icon">
               <i class="ion ion-person-add"></i>
@@ -57,14 +57,14 @@
           <!-- small box -->
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>65</h3>
+              <h3>{{$stores->count() }}</h3>
 
-              <p>Unique Visitors</p>
+              <p>Stores</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('store.index')}}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
