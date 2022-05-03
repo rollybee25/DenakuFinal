@@ -101,6 +101,26 @@
         height: 10px;
     }
 
+    #taena {
+        height: 60vh !important;
+    }
+
+    .table thead,
+    .table th 
+    {
+        text-align: center;
+        font-size: 16px;
+    }
+    .table td {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 12px;
+    }
+
+    .limited_text {
+        text-overflow: ellipsis;
+    }
+
 
     
 </style>
@@ -114,37 +134,20 @@
             <label for="product_category" class="col-md-12 text-center col-form-label">Order</label>
         </div>
         <div class="product_order_list">
-            <div class="table-responsive">
+            <div class="table-responsive" id="taena">
                 <table class="table">
                     <thead>
-                      <tr>
+                        <tr>
                         <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                      </tr>
+                        <th scope="col">Product Code</th>
+                        <th scope="col limited_text">Product Name</th>
+                        <th scope="col">Quantity</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
-                      </tr>
+
                     </tbody>
-                  </table>
+                    </table>
             </div>
         </div>
     </div>
@@ -166,7 +169,7 @@
                 </div>
                 <div class="col-md-12">
                     @foreach ($product_category as $categories)
-                        <div id="{{ $categories->id }}"class="category_select col-md-2 btn btn-info btn-square-md">
+                        <div id="{{ $categories->category }}"class="category_select col-md-3 col-sm-2 btn btn-info btn-square-md">
                             <p>{{$categories->category}}</p>
                         </div>
                     @endforeach
@@ -184,57 +187,6 @@
     <div class="footer-section">Footer</div>
 </div>
 
-
-{{-- <div class="content-wrapper" style="background-color: white;">
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="divtable col-md-6">
-                    <div class="col-md-12 gradient-red">
-                        <label for="product_category" class="col-md-12 text-center col-form-label">Order</label>
-                    </div>
-                    <div class="order_list display-grid">
-                            
-                    </div>
-                </div>
-                <div class="col-md-6" id="add_product">
-                    <div class="form-group row">
-                        <label for="product_code" class="col-md-3 col-form-label">Client Name: </label>
-                        <div class="col-md-9">
-                            <select id="product_category" class="form-control">
-                                <option selected="">Select Client...</option>
-                                @foreach ($client as $clients)
-                                    <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-12 gradient-red">
-                            <label for="product_category" class="col-md-12 text-center col-form-label">Category</label>
-                        </div>
-                        <div class="col-md-12">
-                            @foreach ($product_category as $categories)
-                                <div id="{{ $categories->id }}"class="category_select btn btn-info btn-square-md">
-                                    <p>{{$categories->category}}</p>
-                                </div>
-                            @endforeach
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-md-12 gradient-blue">
-                            <label for="product_category" class="col-md-12 text-center col-form-label">Product</label>
-                        </div>
-                        <div class="product_list display-grid">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
-
 @endsection
 
 @section('scripts')
@@ -247,6 +199,9 @@
     window.addEventListener('resize', function(event){
         wrapper.style.backgroundColor = "#f4f6f9";
     });
+
+
+    
     
 
     $(document).ready(function(){
@@ -256,28 +211,110 @@
             }
         });
 
+        var products_list = {};
+        var order_list = {};
+        var order_id= [];
+
+        var url= "{{route('order.category.load')}}";
+
+        $.ajax({
+            url:url,
+            method:'get',
+            data:{
+
+            },
+            success:function(response){
+                products_list["category"] = [];
+                products_list["products"] = [];
+
+
+                response.category.forEach(element => {
+                    products_list["category"].push(element.category);
+                });
+
+                response.products.forEach(product => {
+                    products_list["products"].push(product);
+                });
+            }
+        });
+
         $(document).on('click','.product_select', function() {
             var id = $(this).attr('id');
+            var new_value;
+            products_list.products.find(product => {
+                if(product.id == id && product.stocks > 0){
+                    product.stocks = product.stocks - 1;
+                    new_value = product.stocks;
+
+                    if( id in order_list ) {
+                        order_list[id].stocks += 1;
+                    } else {
+                        order_list[id] = {
+                            id: product.id,
+                            code: product.code,
+                            name: product.name,
+                            stocks: 1,
+                        }
+                        order_id.push(id);
+                    }
+                }
+            });
+
+            
+
+            $('.product_order_list tbody').empty();
+
+            order_id.forEach(element => {
+                var order = order_list[element];
+                $('.product_order_list tbody').append($('<tr id="'+order.id+'">')
+                    .append($('<td>').text(order.id))
+                    .append($('<td>').text(order.code))
+                    .append($('<td>').text(order.name))
+                    .append($('<td>')
+                        .append($('<span class="order-minus" id="'+order.id+'">').append('<i class="fa fa-minus-square" style="color: red; cursor: pointer">'))
+                        .append($('<input type="text" style="width: 50px; text-align: center; margin: 0 5px">').val(order.stocks))
+                        .append($('<span class="order-plus" id="'+order.id+'">').append('<i class="fa fa-plus-square" style="color: green; cursor: pointer">'))
+                    )
+                );
+            });
+            
+            $(this).find('.product_footer p strong').text(new_value);
         });
 
         $(document).on('click', '.category_select ', function() {
             var category = $(this).attr("id");
-            var url = "{{ route('order.category.select') }}"
-            $.ajax({
-                url:url,
-                method:'POST',
-                data:{
-                    category: category
-                },
-                success:function(response){
-                    $('.product_list').empty();
-                    $('.product_list').append(response.products)
-                },
-                error:function(error){
-                    console.log(error)
-                }
+
+
+            var new_object = products_list.products.filter(function (el) {
+                return el.category == category;
+            });
+
+            $('.product_list').empty();
+            new_object.forEach(element => {
+                $('.product_list').append($('<div id="'+element.id+'" class="product_select btn-square-md grid-items">')
+                    .append($('<div class="product_name">')
+                        .append($('<p class="text-small">').text(element.name)))
+                    .append($('<div class="product_footer">')
+                        .append($('<p class="text-big">')
+                            .append($('<strong>').text(element.stocks))))
+                );
             });
         });
+
+        $(document).on('click', '.order-minus', function() {
+            var id = $(this).attr('id');
+            var yeah = $('.product_list #'+id+' .product_footer p strong').text();
+            $('.product_list #'+id+' .product_footer p strong').text(parseInt(yeah)+1);
+            order_list[id].stocks += 1;
+            var qty = $(this).siblings('input').val();
+            $(this).siblings('input').val(parseInt(qty - 1));
+            if( parseInt(qty) == 1) {
+                $(this).closest('tr').remove();
+            } else {
+                $(this).siblings('input').val( qty - 1);
+            }
+            console.log(yeah);
+        })
     });
 </script>
 @endsection

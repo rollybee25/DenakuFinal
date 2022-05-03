@@ -32,6 +32,9 @@ Route::get('/sample-cropper', [App\Http\Controllers\ProductController::class, 's
 Route::get('/order', [OrderManagementController::class, 'getOrderIndex'])->name('order.index');
 Route::get('/order/add', [OrderManagementController::class, 'addOrderView'])->name('order.add');
 Route::post('/order/category-select', [OrderManagementController::class, 'getCategorySelect'])->name('order.category.select');
+Route::post('/order/get-one-product', [OrderManagementController::class, 'getOneProduct'])->name('order.product.details');
+Route::get('/order/get-category-load', [OrderManagementController::class, 'getCategoryLoad'])->name('order.category.load');
+
 
 Route::get('/product', [ProductController::class, 'getProductIndex'])->name('product.index');
 Route::get('/product/add-view', [ProductController::class, 'addProductView'])->name('product.add-view');
