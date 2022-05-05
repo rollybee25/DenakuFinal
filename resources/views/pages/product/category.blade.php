@@ -166,6 +166,7 @@
             }
           });
 
+          $(this).removeAttr('disabled');
           $('#add_category_product_modal').modal('hide');
 
         });
