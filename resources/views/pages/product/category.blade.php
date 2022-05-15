@@ -67,6 +67,8 @@
 
 @section('scripts')
   <script>
+
+    
     
     $(document).ready(function(){
         $.ajaxSetup({
@@ -74,6 +76,15 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $(document).on('click','.image-holder', function() {
+            $('.image-div input').trigger('click');
+        })
+
+        $(document).on('change','.image-div input', function() {
+          var image = $('.image-div input[type=file]')[0].files[0];
+          console.log(image);
+        })
 
         $(document).on('click', '.checked-box', function(){
           var value = $(this).is(':checked');
@@ -134,14 +145,33 @@
           e.preventDefault();
 
           var category_name = $(this).closest('#add_category_product_modal').find("#category_name").val();
+          var image = $('.image-div input[type=file]')[0].files[0];
           var url = '{{ route('product-category.add') }}';
+
+
+          // var form = $('#category-form')
+          var form = document.getElementById('category-form');
+          var form_data = new FormData($('#category-form')[0]);
+
+
+          console.log(form_data);
+          // form_data.append('image', image, image.name);
+          // form_data.append('category_name', category_name);
+
+          for (var key of form_data.entries()) {
+              console.log(key[0] + ', ' + key[1]);
+          }
+
+
 
           $.ajax({
             url:url,
-            method:'POST',
-            data:{
-                    category_name:category_name
-                  },
+            type:'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: form_data,
             success:function(response){
               if(response.success === true) {
                 $(this).removeAttr("disabled")

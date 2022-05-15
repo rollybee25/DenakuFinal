@@ -31,6 +31,11 @@ class ProductCategoryController extends Controller
     public function addCategory(Request $request){
         DB::beginTransaction();
 
+        function unlinked($file) {
+            $destination = public_path() . '/images/' . $file;
+            unlink($destination);
+        }
+
         try {
 
             //find if added already
@@ -38,16 +43,48 @@ class ProductCategoryController extends Controller
                 ->where('status','=','2')
                 ->first();
 
+            
+
             if( $category ) {
-                $category = ProductCategory::where('category',$request->category_name)
-                ->where('status','=','2')
-                ->first();
-                $category->status = '1';
-                $category->update();
+
+                if ($_FILES['picture']['name']) {
+                    if (!$_FILES['picture']['error']) {
+                        $name = md5(rand(100, 200));
+                        $ext = explode('.', $_FILES['picture']['name']);
+                        $filename = $name . '.' . $ext[1];
+                        $destination = public_path() . '/images/' . $filename;
+                        $location = $_FILES["picture"]["tmp_name"];
+                        move_uploaded_file($location, $destination);
+
+                        $category = ProductCategory::where('category',$request->category_name)
+                        ->where('status','=','2')
+                        ->first();
+
+                        $category->status = '1';
+                        $old_photo = $category->images;
+                        $category->images = $filename;
+                        $category->update();
+                        unlinked($old_photo);
+
+                    }
+                }
+
+                
             } else {
-                $category = new ProductCategory();
-                $category->category = $request['category_name'];
-                $category->save();
+
+                if (!$_FILES['picture']['error']) {
+                    $name = md5(rand(100, 200));
+                    $ext = explode('.', $_FILES['picture']['name']);
+                    $filename = $name . '.' . $ext[1];
+                    $destination = public_path() . '/images/' . $filename;
+                    $location = $_FILES["picture"]["tmp_name"];
+                    move_uploaded_file($location, $destination);
+
+                    $category = new ProductCategory();
+                    $category->category = $request['category_name'];
+                    $category->images = $filename;
+                    $category->save();
+                }
             }
 
             DB::commit();
