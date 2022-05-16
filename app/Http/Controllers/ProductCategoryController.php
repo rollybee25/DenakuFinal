@@ -64,8 +64,10 @@ class ProductCategoryController extends Controller
                         $old_photo = $category->images;
                         $category->images = $filename;
                         $category->update();
-                        unlinked($old_photo);
 
+                        if($old_photo != null) {
+                            unlinked($old_photo);
+                        }
                     }
                 }
 
@@ -109,10 +111,37 @@ class ProductCategoryController extends Controller
     public function editCategory(Request $request){
         DB::beginTransaction();
 
+        function unlinked($file) {
+            $destination = public_path() . '/images/' . $file;
+            unlink($destination);
+        }
+
+        // dd(request()->all());
+
+        // dd($request->picture);
+
+        
+
         try {
 
-            $category = ProductCategory::find($request->id);
+            $filename = '';
+
+            if ($_FILES['picture']['name']) {
+                if (!$_FILES['picture']['error']) {
+                    $name = md5(rand(100, 200));
+                    $ext = explode('.', $_FILES['picture']['name']);
+                    $filename = $name . '.' . $ext[1];
+                    $request->picture->move(public_path('images'), $filename);
+                }
+            }
+            
+            $category = ProductCategory::find($request['id-to-update']);
             $category->category = $request['category_name'];
+            $old_photo = $category->images;
+            if($filename != '') {
+                $category->images = $filename;
+                unlinked($old_photo);
+            }
             $category->update();
 
             DB::commit();
@@ -122,6 +151,8 @@ class ProductCategoryController extends Controller
                     'message' => 'Success'
                 ]
             );
+
+            
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -163,6 +194,15 @@ class ProductCategoryController extends Controller
     }
 
     public function getProductCategoryTable(Request $request) {
+
+        function image($image) {
+
+            $url = asset('images/'.$image);
+            
+            return '
+                <img src="'.$url.'" border="0" width="40" height="40" class="img-rounded" align="center" />
+            ';
+        }
 
         function active($active, $id) {
             $check = '';
@@ -241,9 +281,11 @@ class ProductCategoryController extends Controller
             foreach ($post_data as $key => $post_val)
             {
 
+                
 
             $postnestedData['id'] = $key + 1;
             $postnestedData['category'] = $post_val->category;
+            $postnestedData['image'] = image($post_val->images);
             $postnestedData['active'] = active($post_val->active, $post_val->id);
             $postnestedData['action'] = button('edit', $post_val->id, 'Edit');
             $postnestedData['action'] .= button('delete', $post_val->id, 'Delete');

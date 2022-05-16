@@ -35,7 +35,8 @@
             <thead>
               <tr>
                   <th class="col-md-2">#</th>
-                  <th class="col-md-5">Category</th>
+                  <th class="col-md-4">Category</th>
+                  <th class="col-md-1">Image</th>
                   <th class="col-md-1">Active</th>
                   <th class="col-md-3">Action</th>
               </tr>
@@ -78,7 +79,7 @@
         });
 
         $(document).on('click','.image-holder', function() {
-            $('.image-div input').trigger('click');
+            $(this).siblings('input').trigger('click');
         })
 
         $(document).on('change','.image-div input', function() {
@@ -153,17 +154,6 @@
           var form = document.getElementById('category-form');
           var form_data = new FormData($('#category-form')[0]);
 
-
-          console.log(form_data);
-          // form_data.append('image', image, image.name);
-          // form_data.append('category_name', category_name);
-
-          for (var key of form_data.entries()) {
-              console.log(key[0] + ', ' + key[1]);
-          }
-
-
-
           $.ajax({
             url:url,
             type:'POST',
@@ -208,13 +198,16 @@
           var id = $(this).closest('#edit_category_product_modal').find(".id-to-update").val();
           var url = '{{ route('product-category.edit') }}';
 
+          var form_data = new FormData($('#category-form-edit')[0]);
+
           $.ajax({
             url:url,
-            method:'POST',
-            data:{
-                    category_name:category_name,
-                    id: id
-                  },
+            type:'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: form_data,
             success:function(response){
               if(response.success === true) {
                 $(this).removeAttr("disabled")
@@ -306,6 +299,9 @@
                   },
                   { 
                       "data": "category",
+                  },
+                  { 
+                      "data": "image",
                   },
                   { 
                       "data": "active",
