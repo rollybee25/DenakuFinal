@@ -65,6 +65,7 @@
 					<th>Product Name</th>
 					<th>Category</th>
 					<th>Available Stocks</th>
+					<th>Image</th>
 					<th>Status</th>
 					<th>Action</th>
 				</tr>
@@ -300,6 +301,10 @@
                 },
 				{ 
                     "data": "category",
+                    "orderable": false
+                },
+				{ 
+                    "data": "stocks",
                     "orderable": false
                 },
 				{ 

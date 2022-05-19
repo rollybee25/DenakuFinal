@@ -313,6 +313,7 @@
                   },
                   { 
                       "data": "image",
+                      "orderable": false
                   },
                   { 
                       "data": "active",
