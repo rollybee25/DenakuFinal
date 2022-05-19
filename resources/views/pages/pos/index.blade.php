@@ -10,27 +10,116 @@
         height: 100%;
     }
     .product-div {
-		background-color: red;
 		margin-left: 20px;
 		margin-right: 10px;
 	}
 
-	.product-div .search-box input {
+    .product-div .search-box div {
+        position: relative;
+    }
+
+	.product-div .search-box div input {
 		width: 520px;
 		border-radius: 0px;
-		height: 40px;
+		height: 7vh;
 	}
+
+    .category-list{
+        margin-top: 2vh;
+        height: 10vh;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .category-list:hover{
+        overflow-x: auto;
+    }
+
+    .category-list::-webkit-scrollbar {
+        height: 10px;
+    }
+
+    .category-list::-webkit-scrollbar-track{
+        background-color: transparent;
+    }
+
+    .category-list::-webkit-scrollbar-thumb {
+        background-color: white;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .category-item {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 7px;
+        border-radius: 3px;
+        width: 20%;
+        cursor: pointer;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        transition: background-color 500ms;
+        transition-timing-function: linear;
+    }
+
+    .category-item img{
+        vertical-align:middle;
+        display: inline-block;
+        padding-right: 2px;
+        cursor: pointer;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
+
+    .category-item span{
+        padding-left: 5px;
+        vertical-align:middle;
+        display: inline-block;
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .category-item i{
+        font-size: 30px;
+        vertical-align:middle;
+        color: white;
+        padding: 5px;
+        background-color: #EAEDED;
+        border-radius: 5px;
+    }
+
+
+    .category-item:hover{
+        color: white;
+        background-color: #007bff;
+    }
+
+    .category-item.active{
+        background-color: #007bff;
+        color: white;
+    }
+
+    .category-item.active i{
+        color: white;
+        background-color: #007bff;
+    }
+
+
+    .category-item input {
+        height: 7vh;
+        border-radius: 0px;
+    }
 
     .product-holder, .order-holder {   
         height: 100%;
-        padding-top: 20px;
+        padding-top: 4vh;
     }
 
 	.order-div{
         width: 100%;
         padding-left: 20px;
         padding-right: 20px;
-        padding-top: 20px;
+        padding-top: 4vh;
 	}
 
     .order-div div {
@@ -38,7 +127,7 @@
 	}
 
 	.order-div div select {
-		height: 40px;
+		height: 7vh;
 	}
 
     .order-div .print-order{
@@ -57,7 +146,16 @@
 		<div class="col-md-8 product-holder">
 			<div class="product-div">
 				<div class="search-box">
-					<input class="form-control" type="text" placeholder="Search for product here..."/>
+					<div>
+                        <input class="form-control" type="text" placeholder="Search for product here..."/>
+                        <div><i ></i></div>
+                    </div>
+				</div>
+                <div class="category-list">
+					<div id="" class="category-item active"><i class="fa fa-th-list" aria-hidden="true"></i><span>All Category</span></div>
+                    @foreach ($product_category as $category)
+                        <div id="{{$category->id}}" class="category-item"><img src="{{asset('images/'.$category->images)}}" width="40" height="40" class="img-rounded" alt=""/><span>{{$category->category}}</span></div>
+                    @endforeach
 				</div>
 			</div>
 		</div>
@@ -91,7 +189,9 @@
 
 	$('.main-header').hide();
 
-    
+    var element = document.getElementsByClassName('category-list');
+
+    element[0].scrollIntoView(); // Scroll to this element
 
     const wrapper = document.querySelector('.content-wrapper');
 
@@ -110,6 +210,17 @@
         var products_list = {};
         var order_list = {};
         var order_id= [];
+
+        $('.pushmenu-btn').trigger('click');
+
+        $('.category-item').click(function() {
+            $('.category-item').each(function() {
+                if($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                }
+            });
+            $(this).addClass('active');
+        });
 
         var url= "{{route('order.category.load')}}";
 
@@ -133,7 +244,6 @@
                 });
             }
         });
-
 
         $(document).on('click','.product_select', function() {
             var id = $(this).attr('id');
