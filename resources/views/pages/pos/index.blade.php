@@ -350,6 +350,32 @@
                 product.find('.product-item-bottom p strong').text(stocks);
 
                 if(order_list.length > 0){
+
+                    var index = order_list.findIndex(x => x.id === product_id);
+                    
+                    if (index > -1) {
+                        order_list[index].stocks += 1;
+                        var add_qty = $('.order-list .product-order-item p span').text();
+                        var new_qty = parseInt(add_qty) + 1;
+
+                        var add_qty = $('#product_id'+product_id).siblings('p').find('span').text();
+                        var new_qty = parseInt(add_qty) + 1;
+                        $('#product_id'+product_id).siblings('p').find('span').text(new_qty);
+                    } else {
+                        var product = {
+                            id: product_id,
+                            name: product_name,
+                            stocks: 1
+                        }
+                        order_list.push(product);
+                        $('.order-list').append($('<div class="product-order-item">')
+                            .append($('<h3>').text(product_name))
+                            .append($('<p>').text('x')
+                                .append($('<span>').text(1))
+                            )
+                            .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
+                        );
+                    }
                     
                 } else {
                     var product = {
@@ -358,11 +384,15 @@
                         stocks: 1
                     }
                     order_list.push(product);
+                    $('.order-list').append($('<div class="product-order-item">')
+                        .append($('<h3>').text(product_name))
+                        .append($('<p>').text('x')
+                            .append($('<span>').text(1))
+                        )
+                        .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
+                    );
                 }
             }
-
-            console.log(order_list);
-
         })
 
         // FOR VALIDATION ONLY
