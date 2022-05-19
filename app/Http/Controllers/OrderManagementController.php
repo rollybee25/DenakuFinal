@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\ProductCategory;
 use App\Models\Client;
+use App\Models\Product;
 use Auth;
 use DB;
 use Exception;
@@ -32,6 +33,18 @@ class OrderManagementController extends Controller
         return view('pages.order.index', compact('user', 'product_category', 'products'));
     }
 
+    public function getOneProduct(Request $request) {
+
+        $product = Product::find($request->product_id);
+
+        return response()->json(
+            [
+                'success' => true,
+                'product' => $product,
+            ]
+        );
+    }
+
     public function addOrderView() {
         $user = User::find( Auth::id() );
         $products = DB::table('products')
@@ -41,6 +54,21 @@ class OrderManagementController extends Controller
         $product_category = ProductCategory::where('status', 1)->where('active', 1)->get();
         $client = Client::where('client_status', 1)->where('client_active', 1)->get();
         return view('partials.addOrder', compact('user', 'product_category', 'products', 'client'));
+    }
+
+    public function getCategoryLoad() {
+        $category = ProductCategory::where('status', 1)->where('active', 1)->get();
+        $products = DB::table('products')
+        ->join('product_categories', 'product_categories.id', 'products.category')
+        ->where('product_categories.status', '=', '1')
+        ->get(['product_categories.category', 'products.id','products.code', 'products.name', 'products.stocks']);
+        return response()->json(
+            [
+                'success' => true,
+                'category' => $category,
+                'products' => $products,
+            ]
+        );
     }
 
     public function getCategorySelect(Request $request) {

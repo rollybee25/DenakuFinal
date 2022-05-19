@@ -5,202 +5,181 @@
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 <style>
 
-    .header-title {
-        grid-area: header;
+    .working-area {
+        width: 100%;
+        height: 100%;
+    }
+    .product-div {
+		margin-left: 20px;
+		margin-right: 10px;
+	}
+
+    .product-div .search-box div {
+        position: relative;
     }
 
-    .order-list {
-        padding: 20px;
-        grid-area: order-list;
-        border: 2px solid rgb(228, 4, 4);
-        border-radius: 5px;
-    }
-    
-    .order-list .gradient-red {
-        height: 8%;
-    }
-    .order-list .product_order_list .table-responsive {
-        background-color: #fff;
-        height: 92%;
-        weight: 100%;
+	.product-div .search-box div input {
+		width: 520px;
+		border-radius: 0px;
+		height: 7vh;
+	}
+
+    .category-list{
+        margin-top: 2vh;
+        height: 10vh;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
     }
 
-    .order-list .order-list-btn {
-        margin-top: 10px;
+    .category-list:hover{
+        overflow-x: auto;
     }
 
-    .order-list .order-list-btn {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        gap: 5px;
-    }
-    
-    .pos-list {
-        padding: 20px;
-        grid-area: pos-list;
-        border: 2px solid rgb(228, 4, 4);
-        border-radius: 5px;
-    }
-
-    .pos-list .category-list {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr 1fr;
-        gap: 5px;
-    }
-
-    .pos-list .client-input{
-        padding: 10px;
-        color: white;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-    }
-
-    .pos-list .client-input div  {
-        height: 50px;
-        background-color: yellow;
-        margin: 5px 5px;
-    }
-
-    .pos-list .client-input div label{
-        text-align:center;
-    }
-
-    .pos-list .product_list  {
-        max-height: 320px;
-        overflow: auto;
-    }
-
-    .pos-list .product_name{
-        height: 60px;
-    }
-
-    .footer-section {
-        grid-area: footer;
-        background-color: black;
-    }
-
-    .grid-container {
-        display: grid;
-        grid-template-areas: 'header header'
-        'header header'
-        'order-list pos-list'
-        'order-list pos-list'
-        'order-list pos-list'
-        'order-list pos-list'
-        'order-list pos-list'
-        'order-list pos-list'
-        'footer footer'
-        'footer footer'
-        'footer footer';
-        grid-template-columns: 1fr 1fr;
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .product_select {
-        height: 150px;
-    }
-
-    .product_footer span i {
-        width: 10px;
+    .category-list::-webkit-scrollbar {
         height: 10px;
     }
 
-    #taena {
-        height: 60vh !important;
+    .category-list::-webkit-scrollbar-track{
+        background-color: transparent;
     }
 
-    .table thead,
-    .table th 
-    {
-        text-align: center;
-        font-size: 16px;
-    }
-    .table td {
-        text-align: center;
-        vertical-align: middle;
-        font-size: 12px;
+    .category-list::-webkit-scrollbar-thumb {
+        background-color: white;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     }
 
-    .limited_text {
-        text-overflow: ellipsis;
+    .category-item {
+        display: inline-block;
+        padding: 5px 10px;
+        margin-right: 7px;
+        border-radius: 3px;
+        width: 20%;
+        cursor: pointer;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        transition: background-color 500ms;
+        transition-timing-function: linear;
+    }
+
+    .category-item img{
+        vertical-align:middle;
+        display: inline-block;
+        padding-right: 2px;
+        cursor: pointer;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    }
+
+    .category-item span{
+        padding-left: 5px;
+        vertical-align:middle;
+        display: inline-block;
+        text-align: right;
+        cursor: pointer;
+    }
+
+    .category-item i{
+        font-size: 30px;
+        vertical-align:middle;
+        color: white;
+        padding: 5px;
+        background-color: #EAEDED;
+        border-radius: 5px;
     }
 
 
-    
+    .category-item:hover{
+        color: white;
+        background-color: #007bff;
+    }
+
+    .category-item.active{
+        background-color: #007bff;
+        color: white;
+    }
+
+    .category-item.active i{
+        color: white;
+        background-color: #007bff;
+    }
+
+
+    .category-item input {
+        height: 7vh;
+        border-radius: 0px;
+    }
+
+    .product-holder, .order-holder {   
+        height: 100%;
+        padding-top: 4vh;
+    }
+
+	.order-div{
+        width: 100%;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 4vh;
+	}
+
+    .order-div div {
+		margin: 0;
+	}
+
+	.order-div div select {
+		height: 7vh;
+	}
+
+    .order-div .print-order{
+        padding: 0;
+    }
+
+    .order-holder {
+        position: relative;
+        background-color: white;
+    }
 </style>
 
 @section('content')
-
-<div class="content-wrapper grid-container" style="background-color: white;">
-    <div class="header-title gradient-red-bottom">Header</div>
-    <div class="order-list">
-        <div class="col-md-12 gradient-red">
-            <label for="product_category" class="col-md-12 text-center col-form-label">Order</label>
-        </div>
-        <div class="product_order_list" >
-            <div class="table-responsive" id="taena" style="border: 2px solid antiquewhite;">
-                <table class="table">
-                    <thead>
-                        <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Product Code</th>
-                        <th scope="col limited_text">Product Name</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Remove</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                    </table>
-            </div>
-        </div>
-        <div class="col-md-12 order-list-btn">
-            <div class="send-to-delivery btn btn-info">
-                <p>Send to Delivery</p>
-            </div>
-            <div class="btn btn-info">
-                <p>Save as Draft</p>
-            </div>
-        </div>
-    </div>
-    <div class="pos-list">
-            <div class="form-group row">
-                <label for="product_code" class="col-md-3 col-form-label">Client Name: </label>
-                <div class="col-md-9">
-                    <select id="product_client" class="form-control">
-                        <option value = "" selected="">Select Client...</option>
+<div class="content-wrapper">
+	<div class="col-md-12 row working-area">
+		<div class="col-md-8 product-holder">
+			<div class="product-div">
+				<div class="search-box">
+					<div>
+                        <input class="form-control" type="text" placeholder="Search for product here..."/>
+                        <div><i ></i></div>
+                    </div>
+				</div>
+                <div class="category-list">
+					<div id="" class="category-item active"><i class="fa fa-th-list" aria-hidden="true"></i><span>All Category</span></div>
+                    @foreach ($product_category as $category)
+                        <div id="{{$category->id}}" class="category-item"><img src="{{asset('images/'.$category->images)}}" width="40" height="40" class="img-rounded" alt=""/><span>{{$category->category}}</span></div>
+                    @endforeach
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4 order-holder p-0">
+			<div class="order-div">
+				<div class="input-group mb-3">
+					<select class="custom-select" id="inputGroupSelect02">
+						<option value = "" selected="">Select Client...</option>
                         @foreach ($client as $clients)
                             <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
                         @endforeach
-                    </select>
+					</select>
+					<div class="input-group-append ">
+						<button class="btn btn-secondary btn-outline-secondary" style="color: white" type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+					</div>
+				</div>
+                
+                <div class="print-order col-md-12">
+                    <button type="button" class="btn btn-primary col-md-12">Print Receipt</button>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-12 gradient-red">
-                    <label for="product_category" class="col-md-12 text-center col-form-label">Category</label>
-                </div>
-                <div class="col-md-12 category-list">
-                    @foreach ($product_category as $categories)
-                        <div id="{{ $categories->category }}"class="category_select btn btn-info btn-square-md">
-                            <p>{{$categories->category}}</p>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-12 gradient-red">
-                    <label for="product_category" class="col-md-12 text-center col-form-label">Product</label>
-                </div>
-                <div class="product_list display-grid">
-                    
-                </div>
-            </div>
-    </div>
-    <div class="footer-section">Footer</div>
+			</div>
+		</div>
+	</div>
 </div>
-
 @endsection
 
 @section('scripts')
@@ -208,15 +187,17 @@
 
     //Add some event listener to manipulate CSS
 
+	$('.main-header').hide();
+
+    var element = document.getElementsByClassName('category-list');
+
+    element[0].scrollIntoView(); // Scroll to this element
+
     const wrapper = document.querySelector('.content-wrapper');
 
     window.addEventListener('resize', function(event){
         wrapper.style.backgroundColor = "#f4f6f9";
     });
-
-
-    
-    
 
     $(document).ready(function(){
         $.ajaxSetup({
@@ -225,9 +206,21 @@
             }
         });
 
+
         var products_list = {};
         var order_list = {};
         var order_id= [];
+
+        $('.pushmenu-btn').trigger('click');
+
+        $('.category-item').click(function() {
+            $('.category-item').each(function() {
+                if($(this).hasClass('active')) {
+                    $(this).removeClass('active');
+                }
+            });
+            $(this).addClass('active');
+        });
 
         var url= "{{route('order.category.load')}}";
 
@@ -415,12 +408,12 @@
             }
 
             if(no_error == 0) {
-                Swal.fire({
-                  title: 'Send to Delivery',
-                  text: 'Nice One',
-                  icon: 'success',
-                  confirmButtonText: 'Okay'
-                })
+				Swal.fire({
+					title: 'Send to Delivery',
+					text: 'Nice One',
+					icon: 'success',
+					confirmButtonText: 'Okay'
+				})
             } else {
                 Swal.fire('',error_massage)
             }

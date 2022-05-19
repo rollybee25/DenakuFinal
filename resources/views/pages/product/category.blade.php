@@ -35,7 +35,8 @@
             <thead>
               <tr>
                   <th class="col-md-2">#</th>
-                  <th class="col-md-5">Category</th>
+                  <th class="col-md-4">Category</th>
+                  <th class="col-md-1">Image</th>
                   <th class="col-md-1">Active</th>
                   <th class="col-md-3">Action</th>
               </tr>
@@ -67,6 +68,8 @@
 
 @section('scripts')
   <script>
+
+    
     
     $(document).ready(function(){
         $.ajaxSetup({
@@ -74,6 +77,14 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $(document).on('click','.image-holder', function() {
+            $(this).siblings('input').trigger('click');
+        })
+
+        $(document).on('change','.image-div input', function() {
+          var image = $('.image-div input[type=file]')[0].files[0];
+        })
 
         $(document).on('click', '.checked-box', function(){
           var value = $(this).is(':checked');
@@ -126,25 +137,40 @@
             var category_name = tr.find("td:nth-child(2)").text();
             $('#delete_category_product_modal').find('.id-to-update').val(id);
             $('#delete_category_product_modal').find('#category_name').val(category_name);
-            $('#delete_category_product_modal').find('#category_name').attr('disabled', 'true');s
+            $('#delete_category_product_modal').find('#category_name').attr('disabled', 'true');
         })
         
 
         $('#product_category_save').on('click', function(e) {
           e.preventDefault();
 
+          var formal =  $(this).closest('#add_category_product_modal');
+
           var category_name = $(this).closest('#add_category_product_modal').find("#category_name").val();
+          var image = $(this).closest('#add_category_product_modal').find('.image-div input[type=file]')[0].files[0];
           var url = '{{ route('product-category.add') }}';
+
+
+          // var form = $('#category-form')
+          var form = document.getElementById('category-form');
+          var form_data = new FormData($('#category-form')[0]);
 
           $.ajax({
             url:url,
-            method:'POST',
-            data:{
-                    category_name:category_name
-                  },
+            type:'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: form_data,
             success:function(response){
               if(response.success === true) {
                 $(this).removeAttr("disabled")
+
+                formal.find('.image-div input[type=file]').val(null);
+                formal.find("#category_name").val(null);
+                formal.find('.image-div img').attr("src", "{{asset('images/default/category-default.png')}}");
+
                 Swal.fire({
                   title: 'Category Inserted',
                   text: 'Success',
@@ -166,27 +192,36 @@
             }
           });
 
+          $(this).removeAttr('disabled');
           $('#add_category_product_modal').modal('hide');
 
         });
 
         $('#product_category_edit').on('click', function(e) {
           e.preventDefault();
-
+          var formal = $(this).closest('#edit_category_product_modal');
           var category_name = $(this).closest('#edit_category_product_modal').find("#category_name").val();
           var id = $(this).closest('#edit_category_product_modal').find(".id-to-update").val();
           var url = '{{ route('product-category.edit') }}';
 
+          var form_data = new FormData($('#category-form-edit')[0]);
+
           $.ajax({
             url:url,
-            method:'POST',
-            data:{
-                    category_name:category_name,
-                    id: id
-                  },
+            type:'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: form_data,
             success:function(response){
               if(response.success === true) {
                 $(this).removeAttr("disabled")
+
+                formal.find("#category_name").val(null);
+                formal.find('.image-div input[type=file]').val(null);
+                formal.find('.image-div img').attr("src", "{{asset('images/default/category-default.png')}}");
+
                 Swal.fire({
                   title: 'Category Updated',
                   text: 'Success',
@@ -275,6 +310,9 @@
                   },
                   { 
                       "data": "category",
+                  },
+                  { 
+                      "data": "image",
                   },
                   { 
                       "data": "active",
