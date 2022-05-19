@@ -4,15 +4,6 @@
 
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 <style>
-    /* .btn-square-md {
-        text-align: center;
-        vertical-align: middle;
-    }
-
-    .hundred-px {
-        width: 100px;
-        height: 100px;
-    } */
 
     .header-title {
         grid-area: header;
@@ -21,7 +12,7 @@
     .order-list {
         padding: 20px;
         grid-area: order-list;
-        border: 2px solid green;
+        border: 2px solid rgb(228, 4, 4);
         border-radius: 5px;
     }
     
@@ -38,7 +29,7 @@
     .pos-list {
         padding: 20px;
         grid-area: pos-list;
-        border: 2px solid green;
+        border: 2px solid rgb(228, 4, 4);
         border-radius: 5px;
     }
 

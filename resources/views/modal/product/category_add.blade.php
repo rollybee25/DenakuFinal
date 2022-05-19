@@ -15,6 +15,16 @@
                     <input type="text" class="form-control" id="category_name" placeholder="Category Name...">
                 </div>
             </div>
+            <div class="form-group row">
+              <div class="image_div col-md-12 d-flex justify-content-center" style="">
+                <div class="" style="border: 2px #ccc dashed; width: 200px; height: 200px">
+                    <label for="inputPassword" class="col-md-12 col-form-label" style="text-align: center; color: #ccc; cursor: pointer; margin: 0 auto">Upload Image</label>
+                </div>
+              </div>
+              <div class="" style="display: none">
+                  <input type="file" class="form-control" id="image_file" placeholder="Upload Image">
+              </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-size delete-btn" data-dismiss="modal">Close</button>
@@ -23,5 +33,9 @@
       </div>
     </div>
   </div>
+
+  <script>
+      
+  </script>
 
   
