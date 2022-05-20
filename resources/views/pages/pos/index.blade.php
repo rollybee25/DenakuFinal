@@ -188,12 +188,27 @@
         position: relative;
         background-color: white;
     }
+
+    .order-list .product-order-item {
+        position: relative;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.16) ;
+        padding: 10px;
+        margin: 5px 0;
+    }
+
+    .order-list .product-order-item .product-order-close {
+        position: absolute;
+        color: red;
+        cursor: pointer;
+        top: 5;
+        right: 5;
+    }
 </style>
 
 @section('content')
 <div class="content-wrapper">
 	<div class="col-md-12 row working-area">
-		<div class="col-md-8 product-holder">
+		<div class="col-md-9 product-holder">
 			<div class="product-div">
 				<div class="search-box">
 					<div>
@@ -221,7 +236,7 @@
                 </div>
 			</div>
 		</div>
-		<div class="col-md-4 order-holder p-0">
+		<div class="col-md-3 order-holder p-0">
 			<div class="order-div">
 				<div class="input-group mb-3">
 					<select class="custom-select" id="inputGroupSelect02">
@@ -339,6 +354,24 @@
             })
         })
 
+        $(document).on('click', '.product-order-close', function() {
+            var form_product = $(this).closest('.product-order-item');
+            var product_id = $(this).attr('id');
+
+            form_product.remove();
+            var stocks = order_list.find(x => x.id === product_id).stocks;
+            var new_order_list = order_list.filter(x => x.id !== product_id);
+            order_list = new_order_list;
+
+            $('.product-item').each(function() {
+                if($(this).attr('id') == product_id) {
+                    var old_stocks = parseInt($(this).find('.product-item-bottom p strong').text());
+                    $(this).find('.product-item-bottom p strong').text(old_stocks + stocks)
+                }
+            })
+
+        })
+
         $(document).on('click','.product-item', function() {
             var product = $(this);
             var product_id = product.attr('id');
@@ -369,6 +402,9 @@
                         }
                         order_list.push(product);
                         $('.order-list').append($('<div class="product-order-item">')
+                            .append($('<div class="product-order-close" id="'+product_id+'">')
+                                .append($('<i class="fa-solid fa-circle-xmark">'))    
+                            )
                             .append($('<h3>').text(product_name))
                             .append($('<p>').text('x')
                                 .append($('<span>').text(1))
@@ -385,6 +421,9 @@
                     }
                     order_list.push(product);
                     $('.order-list').append($('<div class="product-order-item">')
+                        .append($('<div class="product-order-close" id="'+product_id+'">')
+                            .append($('<i class="fa-solid fa-circle-xmark">'))    
+                        )
                         .append($('<h3>').text(product_name))
                         .append($('<p>').text('x')
                             .append($('<span>').text(1))
