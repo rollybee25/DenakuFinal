@@ -187,6 +187,7 @@
     .order-holder {
         position: relative;
         background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
 
     .order-list .product-order-item {
@@ -202,6 +203,42 @@
         cursor: pointer;
         top: 5;
         right: 5;
+    }
+
+    .order-list .product-order-item .product-order-close i{
+        transition: font-size, transform 150ms;
+        transition-timing-function: linear;
+    }
+    .order-list .product-order-item .product-order-close i:hover {
+        font-size: 20px;
+        -webkit-transform:rotate(90deg);
+        -moz-transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        -o-transform: rotate(90deg);
+        transform: rotate(90deg);
+    }
+
+    .order-list .product-order-item .product-order-stocks i.add-item {
+        color: green;
+        cursor: pointer;
+    }
+
+    .order-list .product-order-item .product-order-stocks i.minus-item {
+        color: blue;
+        cursor: pointer;
+    }
+
+    .order-list .product-order-item .product-order-stocks span input {
+        border: none;
+        width: 40px;
+        padding: 0 5px;
+        margin: 0 10px;
+        text-align: center;
+    }
+
+    input:focus {
+        outline: none !important;
+        box-shadow: 0 0 10px #719ECE;
     }
 </style>
 
@@ -391,9 +428,9 @@
                         var add_qty = $('.order-list .product-order-item p span').text();
                         var new_qty = parseInt(add_qty) + 1;
 
-                        var add_qty = $('#product_id'+product_id).siblings('p').find('span').text();
+                        var add_qty = $('#product_id'+product_id).siblings('div').find('span input').val();
                         var new_qty = parseInt(add_qty) + 1;
-                        $('#product_id'+product_id).siblings('p').find('span').text(new_qty);
+                        $('#product_id'+product_id).siblings('div').find('span input').val(new_qty);
                     } else {
                         var product = {
                             id: product_id,
@@ -406,8 +443,12 @@
                                 .append($('<i class="fa-solid fa-circle-xmark">'))    
                             )
                             .append($('<h3>').text(product_name))
-                            .append($('<p>').text('x')
-                                .append($('<span>').text(1))
+                            .append($('<div class="product-order-stocks">')
+                                .append($('<i class="fa-solid fa-square-minus minus-item">'))   
+                                .append($('<span>').text('')
+                                    .append($('<input class="edit-quantity">').val('1'))    
+                                )
+                                .append($('<i class="fa-solid fa-square-plus add-item">'))   
                             )
                             .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                         );
@@ -425,14 +466,70 @@
                             .append($('<i class="fa-solid fa-circle-xmark">'))    
                         )
                         .append($('<h3>').text(product_name))
-                        .append($('<p>').text('x')
-                            .append($('<span>').text(1))
+                        .append($('<div class="product-order-stocks">')
+                            .append($('<i class="fa-solid fa-square-minus minus-item">'))   
+                            .append($('<span>').text('')
+                                .append($('<input class="edit-quantity">').val('1'))    
+                            )
+                            .append($('<i class="fa-solid fa-square-plus add-item">'))   
                         )
                         .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                     );
                 }
             }
         })
+
+        $(document).on('click', '.product-order-stocks i.minus-item', function() {
+            var value = $(this).closest('.product-order-stocks').find('span input').val();
+            var product_id = $(this).closest('.product-order-stocks').siblings('.product-order-close').attr('id');
+
+            var form_product = $(this).closest('.product-order-item');
+
+            var index = order_list.findIndex(x => x.id === product_id);
+
+            if( index > -1) {
+
+                if(order_list[index].stocks > 1){
+                    order_list[index].stocks -= 1;
+                    $(this).closest('.product-order-stocks').find('span input').val(order_list[index].stocks);
+                } else {
+                    form_product.remove();
+                    var stocks = order_list.find(x => x.id === product_id).stocks;
+                    var new_order_list = order_list.filter(x => x.id !== product_id);
+                    order_list = new_order_list;
+                }
+                $('.product-item').each(function() {
+                    if($(this).attr('id') == product_id) {
+                        var old_stocks = parseInt($(this).find('.product-item-bottom p strong').text());
+                        $(this).find('.product-item-bottom p strong').text(old_stocks + 1)
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', '.product-order-stocks i.add-item', function() {
+            var product_id = $(this).closest('.product-order-stocks').siblings('.product-order-close').attr('id');
+
+
+            var products_stocks = products_list["products"].find(x => x.id === parseInt(product_id)).stocks;
+            var order_stocks = order_list.find(x => x.id === product_id).stocks;
+
+            var check_if_zero = products_stocks - order_stocks;
+
+            if( check_if_zero > 0 ) {
+
+                var index = order_list.findIndex(x => x.id === product_id);
+                order_list[index].stocks += 1;
+                $(this).closest('.product-order-stocks').find('span input').val(order_list[index].stocks);
+
+                $('.product-item').each(function() {
+                    if($(this).attr('id') == product_id) {
+                        var old_stocks = parseInt($(this).find('.product-item-bottom p strong').text());
+                        $(this).find('.product-item-bottom p strong').text(check_if_zero - 1)
+                    }
+                })
+            }
+        });
 
         // FOR VALIDATION ONLY
         var number_only = ['.edit-quantity'];
