@@ -114,6 +114,7 @@
         height: 75vh;
         width: 100%;
         max-height: 75vh;
+        overflow-y: auto;
     }
 
     .product-list .product-item{
@@ -125,6 +126,7 @@
         height: 150px;
         padding: 10px;
         margin-right: 4px;
+        margin-bottom: 4px;
         cursor: pointer;
         transition: background-color 150ms;
         transition-timing-function: linear;
@@ -190,6 +192,13 @@
         box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     }
 
+    .order-list {
+        overflow-y: auto;
+        margin-bottom: 2vh;
+        max-height: 77vh;
+        
+    }
+
     .order-list .product-order-item {
         position: relative;
         border-bottom: 1px solid rgba(0, 0, 0, 0.16) ;
@@ -203,6 +212,10 @@
         cursor: pointer;
         top: 5;
         right: 5;
+    }
+
+    .order-list .product-order-item h3 {
+        font-size: 22px;
     }
 
     .order-list .product-order-item .product-order-close i{
@@ -290,7 +303,7 @@
 
                 </div>
                 <div class="print-order col-md-12">
-                    <button type="button" class="btn btn-primary col-md-12">Print Receipt</button>
+                    <button type="button" class="btn btn-primary col-md-12 print-receipt-button">Print Receipt</button>
                 </div>
 			</div>
 		</div>
@@ -530,6 +543,101 @@
                 })
             }
         });
+
+        $('.edit-quantity').bind('input propertychange', function() {
+            $(this).trigger('blur');
+        })
+
+        $(document).on('blur', '.edit-quantity', function() {
+            var product_id = $(this).closest('.product-order-stocks').siblings('.product-order-close').attr('id');
+
+            var products_stocks = products_list["products"].find(x => x.id === parseInt(product_id)).stocks;
+            var order_stocks = order_list.find(x => x.id === product_id).stocks;
+            var index = order_list.findIndex(x => x.id === product_id);
+
+
+
+            if($(this).val() == "" || $(this).val() == '0' || $(this).val().match(/^[0-9]+$/) != null) {
+                $(this).val(order_stocks);
+            }
+
+            var input_stocks = parseInt($(this).val());
+            var count_if_possible = products_stocks-input_stocks;
+
+            if(count_if_possible >= 0) {
+                order_list[index].stocks = input_stocks;
+
+                $('.product-item').each(function() {
+                    if($(this).attr('id') == product_id) {
+                        var old_stocks = parseInt($(this).find('.product-item-bottom p strong').text());
+                        $(this).find('.product-item-bottom p strong').text(count_if_possible)
+                    }
+                })
+
+            } else {
+                $(this).val(order_stocks);
+            }
+        })
+
+        $(document).on('click', '.print-receipt-button', function() {
+
+                var url = "{{ route('pdf.test') }}";
+
+                window.open(url);
+
+                //     $.ajax({
+                //     url:url,
+                //     method:'get',
+                //     data:{},
+                //     xhrFields: {
+                //         responseType: 'blob'
+                //     },
+                //     success:function(response, status, xhr){
+                //         var filename = "";                   
+                //         var disposition = xhr.getResponseHeader('Content-Disposition');
+
+                //         if (disposition) {
+                //             var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                //             var matches = filenameRegex.exec(disposition);
+                //             if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                //         } 
+                //         var linkelem = document.createElement('a');
+                //         try {
+
+                //             var blob = new Blob([response], { type: 'application/octet-stream' });                        
+
+                //             if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                //                 //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+                //                 window.navigator.msSaveBlob(blob, filename);
+                //             } else {
+                //                 var URL = window.URL || window.webkitURL;
+                //                 var downloadUrl = URL.createObjectURL(blob);
+
+                //                 if (filename) { 
+                //                     // use HTML5 a[download] attribute to specify filename
+                //                     var a = document.createElement("a");
+
+                //                     // safari doesn't support this yet
+                //                     if (typeof a.download === 'undefined') {
+                //                         window.location = downloadUrl;
+                //                     } else {
+                //                         a.href = downloadUrl;
+                //                         a.download = filename;
+                //                         document.body.appendChild(a);
+                //                         a.target = "_blank";
+                //                         a.click();
+                //                     }
+                //                 } else {
+                //                     window.location = downloadUrl;
+                //                 }
+                //             }   
+
+                //         } catch (ex) {
+                //             console.log(ex);
+                //         } 
+                //     }
+                // })
+        })
 
         // FOR VALIDATION ONLY
         var number_only = ['.edit-quantity'];

@@ -10,6 +10,7 @@ use App\Http\Controllers\StoreManagementController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\OrderManagementController;
 use App\Http\Controllers\PointOfSaleController;
+use App\Http\Controllers\PDFController;
 
 
 
@@ -77,6 +78,8 @@ Route::post('/sample/cropperJSView-upload', [SampleController::class, 'getCroppe
 
 Route::get('/sample/MarkAnthony', [SampleController::class, 'getMarkAnthony'])->name('sample-mark-anthony');
 
+
+Route::get('/generate-pdf', [PDFController::class, 'generatePDF'])->name('pdf.test');;
 
 
 Route::get('/json-sample/add', [JsonController::class, 'getJsonData'])->name('get-json-data');
