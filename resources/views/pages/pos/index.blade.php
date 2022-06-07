@@ -219,8 +219,8 @@
     }
 
     .order-list .product-order-item .product-order-close i{
-        transition: font-size, transform 150ms;
-        transition-timing-function: linear;
+        transition: font-size, transform 0.3s;
+        transition-timing-function: ease-in-out;
     }
     .order-list .product-order-item .product-order-close i:hover {
         font-size: 20px;
@@ -289,8 +289,8 @@
 		<div class="col-md-3 order-holder p-0">
 			<div class="order-div">
 				<div class="input-group mb-3">
-					<select class="custom-select" id="inputGroupSelect02">
-						<option value = "" selected="">Select Client...</option>
+					<select class="custom-select" id="client_select">
+						<option value = "" selected="" disabled>Select Client...</option>
                         @foreach ($client as $clients)
                             <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
                         @endforeach
@@ -544,9 +544,9 @@
             }
         });
 
-        $('.edit-quantity').bind('input propertychange', function() {
-            $(this).trigger('blur');
-        })
+        // $('.edit-quantity').bind('input propertychange', function() {
+        //     $(this).trigger('blur');
+        // })
 
         $(document).on('blur', '.edit-quantity', function() {
             var product_id = $(this).closest('.product-order-stocks').siblings('.product-order-close').attr('id');
@@ -556,8 +556,7 @@
             var index = order_list.findIndex(x => x.id === product_id);
 
 
-
-            if($(this).val() == "" || $(this).val() == '0' || $(this).val().match(/^[0-9]+$/) != null) {
+            if($(this).val() == "" || $(this).val() == '0') {
                 $(this).val(order_stocks);
             }
 
@@ -581,9 +580,16 @@
 
         $(document).on('click', '.print-receipt-button', function() {
 
-                var url = "{{ route('pdf.test') }}";
+                if( $('#client_select option:selected').val() == "" )
+                    return alert('Select Customer');
+                if( order_list.length <= 0 )
+                    return alert("Select product");
+                alert("proceed na sa delivery")
 
-                window.open(url);
+                
+                // var url = "{{ route('pdf.test') }}";
+
+                // window.open(url);
 
                 //     $.ajax({
                 //     url:url,
