@@ -5,6 +5,19 @@
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 @section('stylesheets')
 	<style>
+
+		@font-face {
+			font-family: 'password';
+			font-style: normal;
+			font-weight: 400;
+			src: url('https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf');
+		}
+
+		input#password {
+			font-family: 'password';
+			width: 100%;
+		}
+
 		.table thead,
 		.table th 
 		{
@@ -111,7 +124,8 @@
 </section>
 <!-- /.content -->
 </div>
-@include('modal.product.delete');
+@include('modal.product.delete')
+@include('modal.product.addStocks')
 @endsection
 
 
@@ -137,6 +151,9 @@
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
 		});
+
+		var some_id = $('#password');
+		some_id.removeAttr('aria-autocomplete');
 
 		$('.content-wrapper').css("height", "auto");
 
@@ -220,6 +237,22 @@
 			window.location.href = url;
 		});
 
+		$(document).on('click', '.product-add', function() {
+			var btn = $(this);
+            var tr = btn.closest('tr');
+            var id = $(this).attr('id');
+
+            var product_code = tr.find("td:nth-child(1)").text();
+			var product_name = tr.find("td:nth-child(2)").text();
+            $('#add_stocks_product_modal').find('.id-to-update').val(id);
+            $('#add_stocks_product_modal').find('#product_code').val(product_code);
+			$('#add_stocks_product_modal').find('#product_name').val(product_name);
+			$('#add_stocks_product_modal').find('#product_stocks').val('');
+			$('#add_stocks_product_modal').find('#password').val('');
+			$('#add_stocks_product_modal').modal('show');
+
+		});
+
 		$(document).on('click', '.product-delete', function() {
 			var btn = $(this);
             var tr = btn.closest('tr');
@@ -284,7 +317,7 @@
 			"processing": true,
 			"serverSide": true,
 			"ajax": {
-				"url": "/product-get-table-data",
+				"url": "{{ route('product-get-table-data') }}",
 				"dataType": "json",
 				"type": "POST",
 			},

@@ -303,7 +303,7 @@
 
                 </div>
                 <div class="print-order col-md-12">
-                    <button type="button" class="btn btn-primary col-md-12 print-receipt-button">Print Receipt</button>
+                    <button type="button" class="btn btn-primary col-md-12 print-receipt-button">Submit</button>
                 </div>
 			</div>
 		</div>
@@ -408,7 +408,7 @@
             var form_product = $(this).closest('.product-order-item');
             var product_id = $(this).attr('id');
 
-            form_product.remove();
+            form_product.hide("slow", function(){ $(this).remove(); });
             var stocks = order_list.find(x => x.id === product_id).stocks;
             var new_order_list = order_list.filter(x => x.id !== product_id);
             order_list = new_order_list;
@@ -465,6 +465,7 @@
                             )
                             .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                         );
+                        $('.product-order-item').last().hide().show('slow');
                     }
                     
                 } else {
@@ -488,6 +489,7 @@
                         )
                         .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                     );
+                    $('.product-order-item').last().hide().show('slow');
                 }
             }
         })
@@ -584,8 +586,49 @@
                     return alert('Select Customer');
                 if( order_list.length <= 0 )
                     return alert("Select product");
-                alert("proceed na sa delivery")
+                
 
+                var url = "{{ route('pos.add') }}";
+                var orders = JSON.stringify(order_list);
+                var client_id = $('#client_select option:selected').val();
+
+                Swal.fire({
+                        title: 'Proceed to delivery?',
+                        text: "You can edit it later, thanks",
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url:url,
+                            method:'post',
+                            data:{
+                                client_id: client_id,
+                                orders: orders
+                            },
+                            success:function(response){
+                                if( response.success == true ) {
+                                    Swal.fire({
+                                        title: 'Order Successful',
+                                        text: 'Order item added to Order List',
+                                        icon: 'success',
+                                        confirmButtonText: 'Okay'
+                                    });
+
+                                    $('.product-order-item').each( function() {
+                                        $(this).remove();
+                                    });
+                                    $('#client_select').val("");
+                                }
+                            }
+                        });
+                    }
+                })
+
+                
                 
                 // var url = "{{ route('pdf.test') }}";
 
