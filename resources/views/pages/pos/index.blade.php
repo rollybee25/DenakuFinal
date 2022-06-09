@@ -694,9 +694,12 @@
         function for_number_only(array) {
             array.forEach(element => {
             $(document).on('keyup', element, function (e) {
-                    if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
-                        this.value = this.value.replace(/[^0-9\.]/g, '');
+                    if (this.value != this.value.replace(/[^0-9]/, '')) {
+                            this.value = this.value.replace(/[^0-9]/, '');
                     }
+                    if((this.value+'').match(/^0/)) {
+						this.value = (this.value+'').replace(/^0+/g, '');
+					}
                     if (e.which == 13) this.blur();
                 });
             });

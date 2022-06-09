@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\ProductCategory;
 use DB;
 use Auth;
+use Hash;
 
 class ProductController extends Controller
 {

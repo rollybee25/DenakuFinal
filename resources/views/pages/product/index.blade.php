@@ -10,12 +10,12 @@
 			font-family: 'password';
 			font-style: normal;
 			font-weight: 400;
-			src: url('https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf');
+			/* src: url('https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf'); */
+			src: url("js/password/password.ttf");
 		}
 
-		input#password {
+		p.input-password {
 			font-family: 'password';
-			width: 100%;
 		}
 
 		.table thead,
@@ -143,8 +143,6 @@
 	});
 
 	
-	
-
 	$(document).ready(function(){
 		$.ajaxSetup({
 			headers: {
@@ -152,8 +150,9 @@
 			}
 		});
 
-		var some_id = $('#password');
-		some_id.removeAttr('aria-autocomplete');
+		$(document).on('input', '#password', function() {
+			$(this).attr('type', 'password');
+		});
 
 		$('.content-wrapper').css("height", "auto");
 
@@ -250,6 +249,50 @@
 			$('#add_stocks_product_modal').find('#product_stocks').val('');
 			$('#add_stocks_product_modal').find('#password').val('');
 			$('#add_stocks_product_modal').modal('show');
+		});
+
+		$('#product_add_stocks_modal').click(function(e) {
+			e.preventDefault();
+
+			var form = $(this).closest('#add_stocks_product_modal');
+			var id = form.find(".id-to-update").val();
+			var stocks = form.find("#product_stocks").val();
+			var password = form.find("#password").val();
+
+			var url = "{{ route('product.add-stocks') }}";
+
+			$.ajax({
+				url:url,
+				method:'POST',
+				data:{
+					id: id,
+					stocks: stocks,
+					password: password,
+				},
+				success:function(response){
+					if(response.success === true) {
+						Swal.fire({
+							title: 'Thank you!',
+							text: 'Stocks Added',
+							icon: 'success',
+							confirmButtonText: 'Okay'
+						})
+						myTable.ajax.reload();
+						$('#add_stocks_product_modal').modal('hide');
+					} else {
+						Swal.fire({
+							title: 'Error',
+							text: response.message,
+							icon: 'error',
+							confirmButtonText: 'Okay'
+						})
+					}
+				},
+				error:function(error){
+					console.log(error)
+				}
+			});
+			$(this).removeAttr("disabled");
 
 		});
 
@@ -310,7 +353,21 @@
 
 		
 
-
+		var number_only = ['.product_stocks'];
+        for_number_only(number_only);
+        function for_number_only(array) {
+            array.forEach(element => {
+            $(document).on('keyup', element, function (e) {
+					if (this.value != this.value.replace(/[^0-9]/, '')) {
+                        this.value = this.value.replace(/[^0-9]/, '');
+                    }
+                    if((this.value+'').match(/^0/)) {
+						this.value = (this.value+'').replace(/^0+/g, '');
+					}
+                    if (e.which == 13) this.blur();
+                });
+            });
+        }
 
 
 		var myTable = $('#productTable').DataTable({
