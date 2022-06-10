@@ -14,7 +14,7 @@ class AddNewColumnProductSalesFirst extends Migration
     public function up()
     {
         Schema::table('product_sales', function (Blueprint $table) {
-            $table->string('sales_id')->after('id');
+            $table->string('sales_id')->after('id')->nullable();
         });
     }
 

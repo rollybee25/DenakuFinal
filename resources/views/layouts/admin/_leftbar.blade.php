@@ -42,7 +42,7 @@
           </li>
 
           <li class="nav-item {{ (request()->is('sales')) ? 'menu-open' : '' }}">
-            <a href="{{route('pos.view') }}" class="nav-link">
+            <a href="{{route('sales.view') }}" class="nav-link">
               <i class="nav-icon fas fa-solid fa-shopping-cart"></i>
               <p>
                 Sales

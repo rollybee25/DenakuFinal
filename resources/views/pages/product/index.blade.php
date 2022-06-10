@@ -257,7 +257,7 @@
 			var form = $(this).closest('#add_stocks_product_modal');
 			var id = form.find(".id-to-update").val();
 			var stocks = form.find("#product_stocks").val();
-			var password = form.find("#password").val();
+			var password = form.find("#password").text();
 
 			var url = "{{ route('product.add-stocks') }}";
 

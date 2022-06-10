@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\ProductCategory;
+use App\Models\Client;
+use App\Models\Product;
+use Auth;
 
 class SampleController extends Controller
 {
@@ -16,6 +21,11 @@ class SampleController extends Controller
     
     public function getCropperViewReal() {
         return view('pages.sample.cropperJs');
+    }
+
+    public function getFPDF() {
+        $user = User::find( Auth::id() );
+        return view('pages.sample.index', compact('user'));
     }
 
     

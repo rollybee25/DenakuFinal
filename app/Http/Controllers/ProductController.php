@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\ProductSale;
 use App\Models\ProductCategory;
+
+
 use DB;
 use Auth;
 use Hash;
@@ -71,10 +74,16 @@ class ProductController extends Controller
                 );
             }
 
+
             $product = Product::find($request->id);
             $product->stocks = $product->stocks + $request->stocks;
             $product->update();
-            
+
+            $product_sale = new ProductSale();
+            $product_sale->product_id = $product->id;
+            $product_sale->product_qty = $request->stocks;
+            $product_sale->status = 'Stocks In';
+            $product_sale->save();
 
             DB::commit();
             return response()->json(
@@ -121,6 +130,12 @@ class ProductController extends Controller
                 $product->stocks = $request->product_stocks;
                 $product->save();
             }
+
+            $product_sale = new ProductSale();
+            $product_sale->product_id = $product->id;
+            $product_sale->product_qty = $request->product_stocks;
+            $product_sale->status = 'Stocks In';
+            $product_sale->save();
 
             DB::commit();
             return response()->json(

@@ -88,11 +88,15 @@ Route::prefix('/store')->group(function () {
     Route::post('/table', [StoreManagementController::class, 'storeGetTableData'])->name('store.table');
 });
 
+Route::prefix('/sample')->group(function () {
+    Route::get('/elibs', [SampleController::class, 'getElibs'])->name('sample.elibs');
+    Route::get('/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');
+    Route::get('/cropperJSView', [SampleController::class, 'getCropperViewReal'])->name('sample.cropperreal');
+    Route::get('/getFPDF', [SampleController::class, 'getFPDF'])->name('sample.get-fpdf');
+    Route::post('/cropperJSView-upload', [SampleController::class, 'getCropperUpload'])->name('sample.cropperreal-upload');
+    
+});
 
-Route::get('/sample/elibs', [SampleController::class, 'getElibs'])->name('sample.elibs');
-Route::get('/sample/cropperJS', [SampleController::class, 'getCropperView'])->name('sample.cropper');
-Route::get('/sample/cropperJSView', [SampleController::class, 'getCropperViewReal'])->name('sample.cropperreal');
-Route::post('/sample/cropperJSView-upload', [SampleController::class, 'getCropperUpload'])->name('sample.cropperreal-upload');
 
 
 Route::get('/sample/MarkAnthony', [SampleController::class, 'getMarkAnthony'])->name('sample-mark-anthony');

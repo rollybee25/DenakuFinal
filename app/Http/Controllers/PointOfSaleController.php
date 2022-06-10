@@ -64,7 +64,7 @@ class PointOfSaleController extends Controller
                     'sales_id' => $id,
                     'product_id' => $order->id,
                     'product_qty' => $order->stocks,
-                    'status' => 'Pending'
+                    'status' => 'Stocks Out'
                 ]);
             }
 
