@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\ProductSale;
 use App\Models\ProductCategory;
+
+
 use DB;
 use Auth;
+use Hash;
 
 class ProductController extends Controller
 {
@@ -57,6 +61,50 @@ class ProductController extends Controller
         return view('partials.editProduct', compact('user', 'product_category', 'products'));
     }
 
+    public function addProductStocks(Request $request) {
+        DB::beginTransaction();
+        try {
+            $user = User::find( Auth::id() );
+            if(!Hash::check($request->password, $user->password)) {
+                return response()->json(
+                    [
+                        'success' => false,
+                        'message' => 'Credentials not match'
+                    ]
+                );
+            }
+
+
+            $product = Product::find($request->id);
+            $product->stocks = $product->stocks + $request->stocks;
+            $product->update();
+
+            $product_sale = new ProductSale();
+            $product_sale->product_id = $product->id;
+            $product_sale->product_qty = $request->stocks;
+            $product_sale->status = 'Stocks In';
+            $product_sale->save();
+
+            DB::commit();
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Success'
+                ]
+            );
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(
+                [
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+
+    }
+
     public function addProduct(Request $request){
         DB::beginTransaction();
 
@@ -82,6 +130,12 @@ class ProductController extends Controller
                 $product->stocks = $request->product_stocks;
                 $product->save();
             }
+
+            $product_sale = new ProductSale();
+            $product_sale->product_id = $product->id;
+            $product_sale->product_qty = $request->product_stocks;
+            $product_sale->status = 'Stocks In';
+            $product_sale->save();
 
             DB::commit();
             return response()->json(
@@ -185,6 +239,13 @@ class ProductController extends Controller
 
         function button($type, $id, $label) {
 
+            if( $type == 'add' ) {
+                return '
+                    <button type="button" id="'.$id.'" 
+                    class="btn btn-info btn-sm product-add">'.$label.'</button>
+                ';
+            }
+
             if( $type == 'edit' ) {
                 return '
                     <button type="button" id="'.$id.'" 
@@ -276,7 +337,8 @@ class ProductController extends Controller
                 $postnestedData['category'] = $post_val->category;
                 $postnestedData['stocks'] = $post_val->stocks;
                 $postnestedData['status'] = active($post_val->active, $post_val->id);
-                $postnestedData['action'] = button('edit', $post_val->id, 'Edit');
+                $postnestedData['action'] = button('add', $post_val->id, 'Add Stocks');
+                $postnestedData['action'] .= button('edit', $post_val->id, 'Edit');
                 $postnestedData['action'] .= button('delete', $post_val->id, 'Delete');
                 $data_val[] = $postnestedData;
                 

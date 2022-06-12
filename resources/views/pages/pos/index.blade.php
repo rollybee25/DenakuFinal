@@ -219,8 +219,8 @@
     }
 
     .order-list .product-order-item .product-order-close i{
-        transition: font-size, transform 150ms;
-        transition-timing-function: linear;
+        transition: font-size, transform 0.3s;
+        transition-timing-function: ease-in-out;
     }
     .order-list .product-order-item .product-order-close i:hover {
         font-size: 20px;
@@ -290,7 +290,7 @@
 			<div class="order-div">
 				<div class="input-group mb-3">
 					<select class="custom-select" id="client_select">
-						<option value = "" selected="">Select Client...</option>
+						<option value = "" selected="" disabled>Select Client...</option>
                         @foreach ($client as $clients)
                             <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
                         @endforeach
@@ -303,7 +303,7 @@
 
                 </div>
                 <div class="print-order col-md-12">
-                    <button type="button" class="btn btn-primary col-md-12 print-receipt-button">Print Receipt</button>
+                    <button type="button" class="btn btn-primary col-md-12 print-receipt-button">Submit</button>
                 </div>
 			</div>
 		</div>
@@ -408,7 +408,7 @@
             var form_product = $(this).closest('.product-order-item');
             var product_id = $(this).attr('id');
 
-            form_product.remove();
+            form_product.hide("slow", function(){ $(this).remove(); });
             var stocks = order_list.find(x => x.id === product_id).stocks;
             var new_order_list = order_list.filter(x => x.id !== product_id);
             order_list = new_order_list;
@@ -465,6 +465,7 @@
                             )
                             .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                         );
+                        $('.product-order-item').last().hide().show('slow');
                     }
                     
                 } else {
@@ -488,6 +489,7 @@
                         )
                         .append($('<input type="hidden" class = "product-id" id="product_id'+product_id+'">'))
                     );
+                    $('.product-order-item').last().hide().show('slow');
                 }
             }
         })
@@ -544,9 +546,9 @@
             }
         });
 
-        $('.edit-quantity').bind('input propertychange', function() {
-            $(this).trigger('blur');
-        })
+        // $('.edit-quantity').bind('input propertychange', function() {
+        //     $(this).trigger('blur');
+        // })
 
         $(document).on('blur', '.edit-quantity', function() {
             var product_id = $(this).closest('.product-order-stocks').siblings('.product-order-close').attr('id');
@@ -556,8 +558,7 @@
             var index = order_list.findIndex(x => x.id === product_id);
 
 
-
-            if($(this).val() == "" || $(this).val() == '0' || $(this).val().match(/^[0-9]+$/) != null) {
+            if($(this).val() == "" || $(this).val() == '0') {
                 $(this).val(order_stocks);
             }
 
@@ -581,19 +582,57 @@
 
         $(document).on('click', '.print-receipt-button', function() {
 
-
-                var pos_order = 0;
-                var client = $('#client_select option:selected').val();
-                if( order_list.length > 0 && client != "") {
-                    console.log(order_list);
-                } else {
-                    alert("meron data");
-                }
-                if(pos_order == 1){
-                    var url = "{{ route('pdf.test') }}";
-                    window.open(url);
-                }
+                if( $('#client_select option:selected').val() == "" )
+                    return alert('Select Customer');
+                if( order_list.length <= 0 )
+                    return alert("Select product");
                 
+
+                var url = "{{ route('pos.add') }}";
+                var orders = JSON.stringify(order_list);
+                var client_id = $('#client_select option:selected').val();
+
+                Swal.fire({
+                        title: 'Proceed to delivery?',
+                        text: "You can edit it later, thanks",
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url:url,
+                            method:'post',
+                            data:{
+                                client_id: client_id,
+                                orders: orders
+                            },
+                            success:function(response){
+                                if( response.success == true ) {
+                                    Swal.fire({
+                                        title: 'Order Successful',
+                                        text: 'Order item added to Order List',
+                                        icon: 'success',
+                                        confirmButtonText: 'Okay'
+                                    });
+
+                                    $('.product-order-item').each( function() {
+                                        $(this).remove();
+                                    });
+                                    $('#client_select').val("");
+                                }
+                            }
+                        });
+                    }
+                })
+
+                
+                
+                // var url = "{{ route('pdf.test') }}";
+
+                // window.open(url);
 
                 //     $.ajax({
                 //     url:url,
@@ -655,9 +694,12 @@
         function for_number_only(array) {
             array.forEach(element => {
             $(document).on('keyup', element, function (e) {
-                    if (this.value != this.value.replace(/[^0-9\.]/g, '')) {
-                        this.value = this.value.replace(/[^0-9\.]/g, '');
+                    if (this.value != this.value.replace(/[^0-9]/, '')) {
+                            this.value = this.value.replace(/[^0-9]/, '');
                     }
+                    if((this.value+'').match(/^0/)) {
+						this.value = (this.value+'').replace(/^0+/g, '');
+					}
                     if (e.which == 13) this.blur();
                 });
             });

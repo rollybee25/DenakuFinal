@@ -41,7 +41,16 @@
             </a>
           </li>
 
-          <li class="nav-item">
+          <li class="nav-item {{ (request()->is('sales')) ? 'menu-open' : '' }}">
+            <a href="{{route('sales.view') }}" class="nav-link">
+              <i class="nav-icon fas fa-solid fa-shopping-cart"></i>
+              <p>
+                Sales
+              </p>
+            </a>
+          </li>
+
+          {{-- <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-solid fa-briefcase"></i>
               <p>
@@ -63,13 +72,13 @@
                 </a>
               </li>
             </ul>
-          </li>
+          </li> --}}
 
           <li class="nav-item {{ (request()->is('product*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-solid fa-cash-register"></i>
               <p>
-                Product Management
+                Products
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -93,24 +102,24 @@
             <a href="{{route('client.index')}}" class="nav-link" >
               <i class="nav-icon fas fa-solid fa-user"></i>
               <p>
-                Client Management
+                Customers
               </p>
             </a>
           </li>
           
-          <li class="nav-item {{ (request()->is('/store')) ? 'menu-open' : '' }}" >
+          {{-- <li class="nav-item {{ (request()->is('/store')) ? 'menu-open' : '' }}" >
             <a href="{{route('store.index')}}" class="nav-link" >
               <i class="nav-icon fas fa-solid fa-store"></i>
               <p>
-                Store Management
+                Stores
               </p>
             </a>
-          </li>
+          </li> --}}
           <li class="nav-item {{ (request()->is('product*')) ? 'menu-open' : '' }}">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-solid fa-truck"></i>
               <p>
-                Delivery Management
+                Delivery
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>

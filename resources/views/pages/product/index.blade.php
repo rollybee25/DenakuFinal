@@ -5,6 +5,19 @@
 <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 @section('stylesheets')
 	<style>
+
+		@font-face {
+			font-family: 'password';
+			font-style: normal;
+			font-weight: 400;
+			/* src: url('https://jsbin-user-assets.s3.amazonaws.com/rafaelcastrocouto/password.ttf'); */
+			src: url("js/password/password.ttf");
+		}
+
+		p.input-password {
+			font-family: 'password';
+		}
+
 		.table thead,
 		.table th 
 		{
@@ -111,7 +124,8 @@
 </section>
 <!-- /.content -->
 </div>
-@include('modal.product.delete');
+@include('modal.product.delete')
+@include('modal.product.addStocks')
 @endsection
 
 
@@ -129,13 +143,15 @@
 	});
 
 	
-	
-
 	$(document).ready(function(){
 		$.ajaxSetup({
 			headers: {
 				'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			}
+		});
+
+		$(document).on('input', '#password', function() {
+			$(this).attr('type', 'password');
 		});
 
 		$('.content-wrapper').css("height", "auto");
@@ -220,6 +236,66 @@
 			window.location.href = url;
 		});
 
+		$(document).on('click', '.product-add', function() {
+			var btn = $(this);
+            var tr = btn.closest('tr');
+            var id = $(this).attr('id');
+
+            var product_code = tr.find("td:nth-child(1)").text();
+			var product_name = tr.find("td:nth-child(2)").text();
+            $('#add_stocks_product_modal').find('.id-to-update').val(id);
+            $('#add_stocks_product_modal').find('#product_code').val(product_code);
+			$('#add_stocks_product_modal').find('#product_name').val(product_name);
+			$('#add_stocks_product_modal').find('#product_stocks').val('');
+			$('#add_stocks_product_modal').find('#password').val('');
+			$('#add_stocks_product_modal').modal('show');
+		});
+
+		$('#product_add_stocks_modal').click(function(e) {
+			e.preventDefault();
+
+			var form = $(this).closest('#add_stocks_product_modal');
+			var id = form.find(".id-to-update").val();
+			var stocks = form.find("#product_stocks").val();
+			var password = form.find("#password").text();
+
+			var url = "{{ route('product.add-stocks') }}";
+
+			$.ajax({
+				url:url,
+				method:'POST',
+				data:{
+					id: id,
+					stocks: stocks,
+					password: password,
+				},
+				success:function(response){
+					if(response.success === true) {
+						Swal.fire({
+							title: 'Thank you!',
+							text: 'Stocks Added',
+							icon: 'success',
+							confirmButtonText: 'Okay'
+						})
+						myTable.ajax.reload();
+						$('#add_stocks_product_modal').modal('hide');
+					} else {
+						Swal.fire({
+							title: 'Error',
+							text: response.message,
+							icon: 'error',
+							confirmButtonText: 'Okay'
+						})
+					}
+				},
+				error:function(error){
+					console.log(error)
+				}
+			});
+			$(this).removeAttr("disabled");
+
+		});
+
 		$(document).on('click', '.product-delete', function() {
 			var btn = $(this);
             var tr = btn.closest('tr');
@@ -277,14 +353,28 @@
 
 		
 
-
+		var number_only = ['.product_stocks'];
+        for_number_only(number_only);
+        function for_number_only(array) {
+            array.forEach(element => {
+            $(document).on('keyup', element, function (e) {
+					if (this.value != this.value.replace(/[^0-9]/, '')) {
+                        this.value = this.value.replace(/[^0-9]/, '');
+                    }
+                    if((this.value+'').match(/^0/)) {
+						this.value = (this.value+'').replace(/^0+/g, '');
+					}
+                    if (e.which == 13) this.blur();
+                });
+            });
+        }
 
 
 		var myTable = $('#productTable').DataTable({
 			"processing": true,
 			"serverSide": true,
 			"ajax": {
-				"url": "/product-get-table-data",
+				"url": "{{ route('product-get-table-data') }}",
 				"dataType": "json",
 				"type": "POST",
 			},

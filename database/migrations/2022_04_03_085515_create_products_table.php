@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('name', 64);
             $table->string('category', 64);
             $table->text('details', 225);
-            $table->string('stocks', 64);
+            $table->integer('stocks');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
