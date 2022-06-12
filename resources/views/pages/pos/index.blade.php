@@ -289,7 +289,7 @@
 		<div class="col-md-3 order-holder p-0">
 			<div class="order-div">
 				<div class="input-group mb-3">
-					<select class="custom-select" id="inputGroupSelect02">
+					<select class="custom-select" id="client_select">
 						<option value = "" selected="">Select Client...</option>
                         @foreach ($client as $clients)
                             <option value="{{ $clients->id }}">{{ $clients->client_name }}</option>
@@ -581,9 +581,19 @@
 
         $(document).on('click', '.print-receipt-button', function() {
 
-                var url = "{{ route('pdf.test') }}";
 
-                window.open(url);
+                var pos_order = 0;
+                var client = $('#client_select option:selected').val();
+                if( order_list.length > 0 && client != "") {
+                    console.log(order_list);
+                } else {
+                    alert("meron data");
+                }
+                if(pos_order == 1){
+                    var url = "{{ route('pdf.test') }}";
+                    window.open(url);
+                }
+                
 
                 //     $.ajax({
                 //     url:url,
