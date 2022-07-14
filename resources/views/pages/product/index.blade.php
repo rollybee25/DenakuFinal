@@ -62,10 +62,10 @@
 	<div class="container-fluid">
 		<div class="row mb-2 col-md-12 row">
 			<a href="{{ route('product.add-view') }}" class="btn-size save-btn add-new-product col-md-2" >Add New Product</a>
-			<div class="btn-group offset-md-8 col-md-2" role="group" aria-label="Basic example">
+			{{-- <div class="btn-group offset-md-8 col-md-2" role="group" aria-label="Basic example">
 				<button id="table_view_btn" type="button" class="btn view-button btn-size btn-secondary"><i class="fa-solid fa-table-list"></i></button>
 				<button id="table_grid_btn" type="button" class="btn view-button btn-size btn-secondary"><i class="fa-solid fa-table"></i></button>
-			</div>
+			</div> --}}
 		</div><!-- /.row -->
 
 
