@@ -62,12 +62,17 @@
                 <div class="form-group row">
                     <label for="product_category" class="col-md-2 col-form-label">Category</label>
                     <div class="col-md-4">
-                        <select id="product_category" class="form-control">
-                            <option selected="">Choose Category...</option>
-                            @foreach ($product_category as $categories)
-                                <option value="{{ $categories->id }}">{{ $categories->category }}</option>
-                            @endforeach
-                        </select>
+                        <div class="input-group mb-3">
+                            <select id="product_category" class="form-control">
+                                <option selected="">Choose Category...</option>
+                                @foreach ($product_category as $categories)
+                                    <option value="{{ $categories->id }}">{{ $categories->category }}</option>
+                                @endforeach
+                            </select>
+                            <div class="input-group-append">
+                              <button class="btn btn-info" data-toggle="modal" data-target="#add_category_product_modal" role="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                            </div>
+                          </div>
                     </div>
                     <label for="product_stocks" class="col-md-2">Stock/s</label>
                     <div class="col-md-4">
@@ -81,7 +86,7 @@
                     </div>
                 </div>
                 <div class="float-right">
-                    <button type="button" class="btn-size delete-btn" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn-size delete-btn" onclick="window.location='{{ URL::route('product.index'); }}'">Close</button>
                     <button type="button" class="btn-size update-btn" id="product_save">Save Product</button>
                 </div>
                 
@@ -89,11 +94,22 @@
         </div>
     </div>
 </div>
-
+@include('modal.product.category_add')
 @endsection
+
 
 @section('scripts')
 <script>
+
+    var loadFile = function(event) {
+      var reader = new FileReader();
+      reader.onload = function(){
+        var output = document.getElementById('blah');
+        output.src = reader.result;
+      };
+
+      reader.readAsDataURL(event.target.files[0]);
+    };
 
     //Add some event listener to manipulate CSS
 
@@ -112,6 +128,14 @@
         });
 
         $('.content-wrapper').css("height", "auto");
+
+        $(document).on('click','.image-holder', function() {
+            $(this).siblings('input').trigger('click');
+        })
+
+		$(document).on('change','.image-div input', function() {
+          var image = $('.image-div input[type=file]')[0].files[0];
+        })
 
         $(document).on('click', '#product_save', function(e){
             e.preventDefault();
@@ -160,6 +184,61 @@
             });
 
             $('#add_product_modal').modal('hide');
+
+        });
+
+        $('#product_category_save').on('click', function(e) {
+          e.preventDefault();
+
+          var formal =  $(this).closest('#add_category_product_modal');
+
+          var category_name = $(this).closest('#add_category_product_modal').find("#category_name").val();
+          var image = $(this).closest('#add_category_product_modal').find('.image-div input[type=file]')[0].files[0];
+          var url = '{{ route('product-category.add') }}';
+
+
+          // var form = $('#category-form')
+          var form = document.getElementById('category-form');
+          var form_data = new FormData($('#category-form')[0]);
+
+          $.ajax({
+            url:url,
+            type:'POST',
+            processData: false,
+            contentType: false,
+            cache: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            data: form_data,
+            success:function(response){
+              if(response.success === true) {
+                $(this).removeAttr("disabled")
+
+                formal.find('.image-div input[type=file]').val(null);
+                formal.find("#category_name").val(null);
+                formal.find('.image-div img').attr("src", "{{asset('images/default/category-default.png')}}");
+
+                Swal.fire({
+                  title: 'Category Inserted',
+                  text: 'Success',
+                  icon: 'success',
+                  confirmButtonText: 'Okay'
+                })
+              } else {
+                Swal.fire({
+                  title: 'Error',
+                  text: 'Duplicate Entry for category: '+ category_name,
+                  icon: 'error',
+                  confirmButtonText: 'Okay'
+                })
+              }
+            },
+            error:function(error){
+              console.log(error)
+            }
+          });
+
+          $(this).removeAttr('disabled');
+          $('#add_category_product_modal').modal('hide');
 
         });
     });

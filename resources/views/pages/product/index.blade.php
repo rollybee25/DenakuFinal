@@ -126,6 +126,7 @@
 </div>
 @include('modal.product.delete')
 @include('modal.product.addStocks')
+@include('modal.client.add')
 @endsection
 
 
@@ -250,6 +251,18 @@
 			$('#add_stocks_product_modal').find('#password').val('');
 			$('#add_stocks_product_modal').modal('show');
 		});
+
+		$(document).on('keyup', '.input-password', function(evt) {
+			if(evt.key === "Enter") {
+				$('#product_add_stocks_modal').trigger('click')
+			}
+		})
+
+		$(document).on('keypress', '.input-password', function(evt) {
+			if(evt.keyCode  === 10 || evt.keyCode === 13) {
+				evt.preventDefault();
+			}
+		})
 
 		$('#product_add_stocks_modal').click(function(e) {
 			e.preventDefault();

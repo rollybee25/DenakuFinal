@@ -105,7 +105,7 @@
         background-color: #007bff;
     }
 
-    .product-holder, .order-holder {   
+    .product-holder, .order-holder {
         height: 100%;
         padding-top: 4vh;
     }
@@ -182,10 +182,6 @@
 		height: 7vh;
 	}
 
-    .order-div .print-order{
-        padding: 0;
-    }
-
     .order-holder {
         position: relative;
         background-color: white;
@@ -197,6 +193,11 @@
         margin-bottom: 2vh;
         max-height: 77vh;
         
+    }
+
+    .print-order {
+        position: absolute;
+        bottom: 0;
     }
 
     .order-list .product-order-item {
@@ -296,7 +297,7 @@
                         @endforeach
 					</select>
 					<div class="input-group-append ">
-						<button class="btn btn-secondary btn-outline-secondary" style="color: white" type="button"><i class="fa-solid fa-pen-to-square"></i></button>
+						<button class="btn btn-secondary btn-outline-secondary" style="color: white" data-toggle="modal"  data-target="#add_client_modal" role="button"><i class="fa-solid fa-pen-to-square"></i></button>
 					</div>
 				</div>
                 <div class="order-list">
@@ -309,9 +310,13 @@
 		</div>
 	</div>
 </div>
+
+@include('modal.client.add')
+
 @endsection
 
 @section('scripts')
+<script src="{{asset('/js/client/client.js')}}"></script>
 <script>
 
     //Add some event listener to manipulate CSS
@@ -365,8 +370,6 @@
                     $(this).show('slow');
                 });
             }
-            
-
         });
 
         var url= "{{route('order.category.load')}}";
@@ -579,6 +582,54 @@
                 $(this).val(order_stocks);
             }
         })
+
+        $('#client_save').on('click', function(e) {
+          e.preventDefault();
+
+          var client_name = $(this).closest('#add_client_modal').find("#client_name").val();
+          var client_phone = $(this).closest('#add_client_modal').find("#client_phone").val();
+          var client_address = $(this).closest('#add_client_modal').find("#client_address").val();
+
+
+          var char = [client_name, client_phone, client_address];
+          
+          alert(char);
+
+          var url = "{{ route('client.add') }}";
+
+          $.ajax({
+            url:url,
+            method:'POST',
+            data:{
+                    client_name:client_name,
+                    client_phone: client_phone,
+                    client_address: client_address
+                    },
+            success:function(response){
+                if(response.success === true) {
+                Swal.fire({
+                    title: 'Client Inserted',
+                    text: 'Success',
+                    icon: 'success',
+                    confirmButtonText: 'Okay'
+                })
+                } else {
+                Swal.fire({
+                    title: 'Error',
+                    text: response.message,
+                    icon: 'error',
+                    confirmButtonText: 'Okay'
+                })
+                }
+            },
+            error:function(error){
+                console.log(error)
+            }
+            });
+            $(this).removeAttr("disabled")
+            $('#add_client_modal').modal('hide');
+
+        });
 
         $(document).on('click', '.print-receipt-button', function() {
 
