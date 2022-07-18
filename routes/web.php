@@ -12,6 +12,7 @@ use App\Http\Controllers\OrderManagementController;
 use App\Http\Controllers\PointOfSaleController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\PhilippineController;
 
 
 
@@ -31,6 +32,9 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/sample-cropper', [App\Http\Controllers\ProductController::class, 'sampleCropper'])->name('sample-cropper');
+
+Route::get('/philippines', [PhilippineController::class, 'getAllLocations'])->name('philippines');
+
 
 Route::prefix('/sales')->group(function () {
     Route::get('/', [SalesController::class, 'getSalesView'])->name('sales.view');
@@ -96,6 +100,7 @@ Route::prefix('/sample')->group(function () {
     Route::post('/cropperJSView-upload', [SampleController::class, 'getCropperUpload'])->name('sample.cropperreal-upload');
     
 });
+
 
 
 

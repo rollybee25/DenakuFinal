@@ -27,6 +27,13 @@
                   <textarea class="form-control " autocomplete="off" id="client_address" placeholder="Client Address..." rows="3"></textarea>
               </div>
             </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-3 col-form-label">Region</label>
+              <div class="col-md-9">
+                <select class="form-control" id="client_region"></select>
+              </div>
+            </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-size delete-btn" data-dismiss="modal">Close</button>

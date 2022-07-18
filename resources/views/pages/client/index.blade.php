@@ -77,6 +77,49 @@
             }
         });
 
+        var philippines = [];
+
+        $.ajax({
+            url:"{{ route('philippines') }}",
+            method:'GET',
+            success:function(response){
+
+              // const region_1 = response["philippines"]["01"].filter( region => region.region_name === "REGION 1")
+
+              var region = "01"
+              var province = "ILOCOS NORTE";
+              var municipality = "PAOAY";
+              var barangay = "";
+
+              // barangay_list = response["philippines"][region]["province_list"][province]["municipality_list"][municipality]["barangay_list"];
+
+              philippines = response.philippines;
+
+              var client_region = $('#client_region');
+
+              client_region.append($('<option>', {
+                  value: null,
+                  text: 'Select region'
+              }));
+
+
+              var list_name = []
+              var object = [];
+              var list = ['CAR', 'NCR', 'REGION I', 'REGION II', 'REGION III', 'REGION IV-A', 'REGION IV-B', 'REGION V', 'REGION VI', 'REGION VII', 'REGION VIII', 'REGION IX', 'REGION X', 'REGION XI', 'REGION XII', 'REGION XIII', 'BARMM'];
+              for ( var property in philippines ) {
+
+                list_name.push(philippines[property].region_name)
+                object[property] = philippines[property].region_name;
+                  
+              }
+
+              list_name = list_name.sort()
+
+            },
+        })
+
+
+
         $(document).on('click', '.checked-box', function(){
           var value = $(this).is(':checked');
           var id = $(this).attr('id');
