@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="add_client_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalCenterTitle">Client Details</h5>
@@ -31,6 +31,24 @@
               <label for="inputPassword" class="col-md-3 col-form-label">Region</label>
               <div class="col-md-9">
                 <select class="form-control" id="client_region"></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-3 col-form-label">Province</label>
+              <div class="col-md-9">
+                <select class="form-control" id="client_province"></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-3 col-form-label">Municipality</label>
+              <div class="col-md-9">
+                <select class="form-control" id="client_municipality"></select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-md-3 col-form-label">Barangay</label>
+              <div class="col-md-9">
+                <select class="form-control" id="client_barangay"></select>
               </div>
             </div>
 

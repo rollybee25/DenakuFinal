@@ -103,20 +103,85 @@
               }));
 
 
-              var list_name = []
-              var object = [];
-              var list = ['CAR', 'NCR', 'REGION I', 'REGION II', 'REGION III', 'REGION IV-A', 'REGION IV-B', 'REGION V', 'REGION VI', 'REGION VII', 'REGION VIII', 'REGION IX', 'REGION X', 'REGION XI', 'REGION XII', 'REGION XIII', 'BARMM'];
-              for ( var property in philippines ) {
+              var list_name = ['REGION I', 'REGION II', 'REGION III', 'REGION IV-A', 'REGION IV-B', 'REGION IX', 'REGION V', 'REGION VI', 'REGION VII', 'REGION VIII', 'REGION X', 'REGION XI', 'REGION XII', 'REGION XIII','NCR', 'CAR', 'BARMM']
+              var object = ['01', '02', '03', '4A', '4B', '09', '05', '06', '07', '08', '10', '11', '12', '13', 'NCR', 'CAR', 'BARMM'];
 
-                list_name.push(philippines[property].region_name)
-                object[property] = philippines[property].region_name;
-                  
-              }
-
-              list_name = list_name.sort()
+              object.forEach((value, index) => {
+                client_region.append($('<option>', {
+                    value: value,
+                    text: list_name[index]
+                }));
+              });
 
             },
         })
+
+        $("#client_region").change(function() {
+            var selected_region = $('#client_region').find(":selected").val();
+            var client_province = $('#client_province');
+
+            client_province.empty();
+            client_province.append($('<option>', {
+                value: null,
+                text: 'Select Province'
+            }));
+
+            for ( province in  philippines[selected_region].province_list ) {
+              client_province.append($('<option>', {
+                  value: province,
+                  text: province
+              }));
+            }
+        })
+
+        $("#client_province").change(function() {
+            var selected_region = $('#client_region').find(":selected").val();
+            var selected_province = $('#client_province').find(":selected").val();
+            var client_municipality = $('#client_municipality');
+            
+
+            client_municipality.empty();
+            client_municipality.append($('<option>', {
+                value: null,
+                text: 'Select Municipality'
+            }));
+
+            // console.log(philippines[selected_region].province_list[selected_province])
+
+
+            for ( municipality in  philippines[selected_region].province_list[selected_province].municipality_list ) {
+              client_municipality.append($('<option>', {
+                  value: municipality,
+                  text: municipality
+              }));
+
+            }
+        })
+
+        $("#client_municipality").change(function() {
+            var selected_region = $('#client_region').find(":selected").val();
+            var selected_province = $('#client_province').find(":selected").val();
+            var client_municipality = $('#client_municipality').find(":selected").val();
+            var client_barangay = $('#client_barangay');
+
+            client_barangay.empty();
+            client_barangay.append($('<option>', {
+                value: null,
+                text: 'Select Barangay'
+            }));
+
+            var barangay_list = philippines[selected_region].province_list[selected_province].municipality_list[client_municipality].barangay_list
+
+            for ( barangay in barangay_list ) {
+              client_barangay.append($('<option>', {
+                  value: barangay,
+                  text: barangay_list[barangay]
+              }));
+
+            }
+        })
+
+        
 
 
 
