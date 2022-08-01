@@ -223,6 +223,10 @@
                   icon: 'success',
                   confirmButtonText: 'Okay'
                 })
+
+                $('#product_category').append('<option value="'+response.category.id+'">'+response.category.category+'</option>')
+                $('#product_category').val(response.category.id)
+
               } else {
                 Swal.fire({
                   title: 'Error',

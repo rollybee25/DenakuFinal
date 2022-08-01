@@ -93,7 +93,8 @@ class ProductCategoryController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'Success'
+                    'message' => 'Success',
+                    'category' => $category
                 ]
             );
 

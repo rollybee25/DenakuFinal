@@ -148,14 +148,6 @@ input:checked+.slider:before {
     padding: 5px;
 }
 
-.active {
-    background-color: rgba(255, 255, 255, .1);
-}
-
-.menu-open {
-    background-color: #343a40;
-}
-
 .fa-trash {
     color: #f10f0f;
 }
@@ -214,4 +206,15 @@ input:checked+.slider:before {
     font-size: 30px;
     text-align: center;
     cursor: pointer;
+}
+
+
+
+/* .menu-open > ul > li.active > a {
+    border-left-color: #4E944F !important;
+    border-left-width: 2px !important;
+} */
+
+.nav-treeview {
+    padding-left: 1rem;
 }
