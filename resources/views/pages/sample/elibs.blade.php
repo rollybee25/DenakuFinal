@@ -42,41 +42,43 @@
         } }
 </style>
 <body>
-    <div class="section-3">
-        <div class="row">
-        <div class="col-lg-6 col-md-6">
-        <img src="/dist/img/denaku-intial.png" class="mt-1 w-100 h-100" alt="">
+    <div class="row">
+        <div class="col-4">
+            <div id="reader" style="width: 600px"></div>
         </div>
-        <div class="col-lg-6 col-md-6" id="para">
-        <h5>CATERING</h5>
-        <h1>Social Event</h1>
-        <p class="text-justify">
-        But I must explain to you how all this mistaken idea of <br> denouncing pleasure
-        and praising pain was born and I <br> will give you a complete account
-        of the system, and <br> expound the actual teachings of the great explorer
-        of <br> the truth, the master-builder of human
-        <p class="text-credit">READ MORE</p>
-        </p>
+        <div class="col-4">
+            <input type="button" id="scanner" />
+            <input type="text" id="result" />
         </div>
-        </div>
-        </div>
-        <div class="section-4">
-        <div class="row mt-5">
-        <div class="col-md-6" id="para">
-        <h5>CATERING</h5>
-        <h1>Social Event</h1>
-        <p class="text-justify">
-        But I must explain to you how all this mistaken idea of <br> denouncing pleasure
-        and praising pain was born and I <br> will give you a complete account
-        of the system, and <br> expound the actual teachings of the great explorer
-        of <br> the truth, the master-builder of human
-        <p class="text-credit">READ MORE</p>
-        </p>
-        </div>
-        <div class="col-md-6">
-        <img src="/dist/img/denaku-intial.png" class="mt-1 w-100 h-100" alt="">
-        </div>
-        </div>
-        </div>
+    </div>
 </body>
 </html>
+<script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+<script src="https://unpkg.com/html5-qrcode"></script>
+<script>
+    let html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader",
+    { fps: 10, qrbox: {width: 250, height: 250} },
+    /* verbose= */ false);
+
+    function onScanSuccess(decodedText, decodedResult) {
+        $('#result').val(decodedText);
+        html5QrcodeScanner.clear()
+    }
+
+    function onScanFailure(error) {
+    // handle scan failure, usually better to ignore and keep scanning.
+    // for example:
+    // console.warn(`Code scan error = ${error}`);
+    }
+
+    $(document).ready(function() {
+        $('#scanner').click(function()  {
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        })
+    })
+
+</script>
