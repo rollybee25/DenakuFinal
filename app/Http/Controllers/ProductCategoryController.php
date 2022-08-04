@@ -36,6 +36,10 @@ class ProductCategoryController extends Controller
             unlink($destination);
         }
 
+        function check_file($file) {
+            return public_path(). '/images/'.$file;
+        }
+
         try {
 
             //find if added already
@@ -65,7 +69,7 @@ class ProductCategoryController extends Controller
                         $category->images = $filename;
                         $category->update();
 
-                        if($old_photo != null) {
+                        if($old_photo != null && file_exists(check_file($old_photo))) {
                             unlinked($old_photo);
                         }
                     }
@@ -112,14 +116,14 @@ class ProductCategoryController extends Controller
     public function editCategory(Request $request){
         DB::beginTransaction();
 
+        function check_file($file) {
+            return public_path(). '/images/'.$file;
+        }
+
         function unlinked($file) {
             $destination = public_path() . '/images/' . $file;
             unlink($destination);
         }
-
-        // dd(request()->all());
-
-        // dd($request->picture);
 
         
 
@@ -139,8 +143,9 @@ class ProductCategoryController extends Controller
             $category = ProductCategory::find($request['id-to-update']);
             $category->category = $request['category_name'];
             $old_photo = $category->images;
-            if($filename != '') {
-                $category->images = $filename;
+            $category->images = $filename;
+
+            if($filename != '' && file_exists(check_file($old_photo))) {
                 unlinked($old_photo);
             }
             $category->update();
@@ -149,7 +154,7 @@ class ProductCategoryController extends Controller
             return response()->json(
                 [
                     'success' => true,
-                    'message' => 'Success'
+                    'message' => 'Success'.$old_photo
                 ]
             );
 

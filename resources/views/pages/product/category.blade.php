@@ -224,7 +224,7 @@
 
                 Swal.fire({
                   title: 'Category Updated',
-                  text: 'Success',
+                  text: response.message,
                   icon: 'success',
                   confirmButtonText: 'Okay'
                 })
